@@ -7,6 +7,8 @@ type Dato = Int
 type Memoria = [(Posicion, Dato)]
 
 xt8088 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], mensajeError = ""}
+at8086 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], mensajeError = ""}
+fp20 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], mensajeError = ""}
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -73,12 +75,3 @@ filtrarRepetidos direccion lista = filter ((/=direccion).fst) lista
 --Se usa en lod
 contenidoDe :: Int -> Microprocesador -> Int
 contenidoDe direccion  = snd.head.(filter ((==direccion).fst)).memoria
-
-
---snd.(find ((==direccion).fst)).memoria
-
---Se usa en contenidoDe
---find _ [] = (0,0)
---find condicion (x:xs)
---	| condicion x = x
---  | otherwise = find condicion xs
