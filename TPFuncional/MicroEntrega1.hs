@@ -14,33 +14,35 @@ fp20 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, me
 
 --FUNCIONES PRINCIPALES
 
+ejecutar funcion = aumentarProgramCounter.funcion
+
 nop :: Microprocesador -> Microprocesador
-nop = aumentarProgramCounter
+nop = ejecutar id
 
 lodv :: Int -> Microprocesador -> Microprocesador
-lodv val = aumentarProgramCounter.(cargarEnA val)
+lodv val = ejecutar (cargarEnA val)
 
 swap :: Microprocesador -> Microprocesador
-swap = aumentarProgramCounter.intercambiarAB
+swap = ejecutar intercambiarAB
 
 add :: Microprocesador -> Microprocesador
-add = aumentarProgramCounter.sumarAB
+add = ejecutar sumarAB
 
 divide :: Microprocesador -> Microprocesador
-divide = aumentarProgramCounter.dividirAB
+divide = ejecutar dividirAB
 
 str :: Int -> Int -> Microprocesador -> Microprocesador
-str addr val = aumentarProgramCounter.(cargarNuevo addr val).(eliminarAnterior addr)
+str addr val = ejecutar ((cargarNuevo addr val).(eliminarAnterior addr))
 
 lod :: Int -> Microprocesador -> Microprocesador
-lod addr micro = (aumentarProgramCounter.(cargarEnA (contenidoDe addr micro))) micro
+lod addr micro = ejecutar (cargarEnA (contenidoDe addr micro)) micro
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --FUNCIONES AUXILIARES
 
 aumentarProgramCounter :: Microprocesador -> Microprocesador
-aumentarProgramCounter micro = micro {programCounter = (programCounter micro) + 1}
+aumentarProgramCounter micro = micro {programCounter = ((+1).programCounter) micro}
 
 -- Se usa en lodv
 cargarEnA :: Int -> Microprocesador -> Microprocesador
@@ -56,13 +58,16 @@ sumarAB micro = micro {acumuladorA = (acumuladorA micro) + (acumuladorB micro), 
 
 -- Se usa en divide
 dividirAB :: Microprocesador -> Microprocesador
-dividirAB micro
-  | ((/=0).acumuladorB) micro = micro {acumuladorA = div (acumuladorA micro) (acumuladorB micro), acumuladorB = 0}
-  | otherwise = accionError micro
+dividirAB (Microprocesador pc a 0 mem mensaje) = errorDivisionPorCero (Microprocesador pc a 0 mem mensaje)
+dividirAB micro = micro {acumuladorA = div (acumuladorA micro) (acumuladorB micro), acumuladorB = 0}
+
+--dividirAB micro
+--  | ((/=0).acumuladorB) micro = micro {acumuladorA = div (acumuladorA micro) (acumuladorB micro), acumuladorB = 0}
+--  | otherwise = errorDivisionPorCero micro
 
 -- Se usa en dividirAB
-accionError :: Microprocesador -> Microprocesador
-accionError micro = micro {mensajeError = "DIVISION BY ZERO"}  --Si B==0
+errorDivisionPorCero :: Microprocesador -> Microprocesador
+errorDivisionPorCero micro = micro {mensajeError = "DIVISION BY ZERO"}  --Si B==0
 
 -- Se usa en str y lod
 cargarNuevo :: Int -> Int -> Microprocesador -> Microprocesador
@@ -74,7 +79,7 @@ eliminarAnterior direccion micro = micro {memoria = ((eliminarRepetidos direccio
 
 --Se usa en eliminarAnterior
 eliminarRepetidos :: Int -> Memoria -> Memoria
-eliminarRepetidos direccion lista = filter ((/=direccion).fst) lista
+eliminarRepetidos direccion = filter ((/=direccion).fst)
 
 --Se usa en lod
 contenidoDe :: Int -> Microprocesador -> Int
