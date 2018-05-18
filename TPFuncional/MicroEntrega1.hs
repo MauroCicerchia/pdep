@@ -1,81 +1,86 @@
 module MicroEntrega1 where
 import Text.Show.Functions
 
-data Microprocesador = Microprocesador {programCounter :: Int, acumuladorA :: Int, acumuladorB :: Int, memoria :: Memoria, mensajeError :: String} deriving Show
+data Microprocesador = Microprocesador {programCounter :: Int, acumuladorA :: Int, acumuladorB :: Int, memoria :: Memoria, programa :: Instruccion, mensajeError :: String} deriving Show
 type Posicion = Int
 type Dato = Int
 type Memoria = [(Posicion, Dato)]
+type Instruccion = Microprocesador -> Microprocesador
 
-xt8088 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], mensajeError = ""}
-at8086 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], mensajeError = ""}
-fp20 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], mensajeError = ""}
+xt8088 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], programa = (nop.nop.nop), mensajeError = ""}
+at8086 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], programa = id, mensajeError = ""}
+fp20 = Microprocesador {programCounter = 0, acumuladorA = 0, acumuladorB = 0, memoria = [], programa = id, mensajeError = ""}
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --FUNCIONES PRINCIPALES
 
-ejecutar funcion = aumentarProgramCounter.funcion
+operar :: Instruccion -> Instruccion
+operar funcion micro
+  | tieneError micro = micro
+  | otherwise = (aumentarProgramCounter.funcion) micro
 
-nop :: Microprocesador -> Microprocesador
-nop = ejecutar id
+nop :: Instruccion
+nop = operar id
 
-lodv :: Int -> Microprocesador -> Microprocesador
-lodv val = ejecutar (cargarEnA val)
+lodv :: Int -> Instruccion
+lodv val = operar (cargarEnA val)
 
-swap :: Microprocesador -> Microprocesador
-swap = ejecutar intercambiarAB
+swap :: Instruccion
+swap = operar intercambiarAB
 
-add :: Microprocesador -> Microprocesador
-add = ejecutar sumarAB
+add :: Instruccion
+add = operar sumarAB
 
-divide :: Microprocesador -> Microprocesador
-divide = ejecutar dividirAB
+divide :: Instruccion
+divide = operar dividirAB
 
-str :: Int -> Int -> Microprocesador -> Microprocesador
-str addr val = ejecutar ((cargarNuevo addr val).(eliminarAnterior addr))
+str :: Int -> Int -> Instruccion
+str addr val = operar ((cargarNuevoEnMemoria addr val).(eliminarAnteriorDeMemoria addr))
+lod :: Int -> Instruccion
+lod addr micro = operar (cargarEnA (contenidoDe addr micro)) micro
 
-lod :: Int -> Microprocesador -> Microprocesador
-lod addr micro = ejecutar (cargarEnA (contenidoDe addr micro)) micro
+cargarPrograma :: Instruccion -> Instruccion
+cargarPrograma instruccion micro = micro {programa = instruccion}
+
+ejecutarPrograma :: Microprocesador -> Microprocesador
+ejecutarPrograma micro = (programa micro) micro
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --FUNCIONES AUXILIARES
 
-aumentarProgramCounter :: Microprocesador -> Microprocesador
+aumentarProgramCounter :: Instruccion
 aumentarProgramCounter micro = micro {programCounter = ((+1).programCounter) micro}
 
 -- Se usa en lodv
-cargarEnA :: Int -> Microprocesador -> Microprocesador
+cargarEnA :: Int -> Instruccion
 cargarEnA valor micro = micro {acumuladorA = valor}
 
 -- Se usa en swap
-intercambiarAB :: Microprocesador -> Microprocesador
+intercambiarAB :: Instruccion
 intercambiarAB micro = micro {acumuladorA = acumuladorB micro, acumuladorB = acumuladorA micro}
 
 -- Se usa en add
-sumarAB :: Microprocesador -> Microprocesador
+sumarAB :: Instruccion
 sumarAB micro = micro {acumuladorA = (acumuladorA micro) + (acumuladorB micro), acumuladorB = 0}
 
 -- Se usa en divide
-dividirAB :: Microprocesador -> Microprocesador
-dividirAB (Microprocesador pc a 0 mem mensaje) = errorDivisionPorCero (Microprocesador pc a 0 mem mensaje)
+dividirAB :: Instruccion
+dividirAB (Microprocesador pc a 0 mem prog mensaje) = errorDivisionPorCero (Microprocesador pc a 0 mem prog mensaje)
 dividirAB micro = micro {acumuladorA = div (acumuladorA micro) (acumuladorB micro), acumuladorB = 0}
 
---dividirAB micro
---  | ((/=0).acumuladorB) micro = micro {acumuladorA = div (acumuladorA micro) (acumuladorB micro), acumuladorB = 0}
---  | otherwise = errorDivisionPorCero micro
-
 -- Se usa en dividirAB
-errorDivisionPorCero :: Microprocesador -> Microprocesador
+errorDivisionPorCero :: Instruccion
 errorDivisionPorCero micro = micro {mensajeError = "DIVISION BY ZERO"}  --Si B==0
 
 -- Se usa en str y lod
-cargarNuevo :: Int -> Int -> Microprocesador -> Microprocesador
-cargarNuevo direccion valor micro = micro {memoria = (direccion, valor) : (memoria micro)}
+cargarNuevoEnMemoria :: Int -> Int -> Instruccion
+cargarNuevoEnMemoria direccion valor micro = micro {memoria = (direccion, valor) : (memoria micro)}
 
 -- Se usa en str y lod
-eliminarAnterior :: Int -> Microprocesador -> Microprocesador
-eliminarAnterior direccion micro = micro {memoria = ((eliminarRepetidos direccion).memoria) micro}
+eliminarAnteriorDeMemoria :: Int -> Instruccion
+eliminarAnteriorDeMemoria direccion micro = micro {memoria = ((eliminarRepetidos direccion).memoria) micro}
 
 --Se usa en eliminarAnterior
 eliminarRepetidos :: Int -> Memoria -> Memoria
@@ -89,8 +94,13 @@ contenidoDe direccion  = snd.head.(encontrarDireccion direccion).memoria
 encontrarDireccion :: Int -> Memoria -> Memoria
 encontrarDireccion direccion = filter ((==direccion).fst)
 
+--Se usa en operar
+tieneError :: Microprocesador -> Bool
+tieneError (Microprocesador _ _ _ _ _ "") = False
+tieneError _ = True
+
 --Se usa en punto4a
-inicializar8086 :: Microprocesador -> Microprocesador
+inicializar8086 :: Instruccion
 inicializar8086 micro = micro {memoria = inicializarMemoria8086}
 
 --Se usa en inicializar8086
@@ -102,7 +112,7 @@ incrementarDupla :: (Posicion, Dato) -> (Posicion, Dato)
 incrementarDupla (a, b) = (a + 1, b + 1)
 
 --Se usa en punto4b
-inicializar8088 :: Microprocesador -> Microprocesador
+inicializar8088 :: Instruccion
 inicializar8088 micro = micro {memoria = inicializarMemoria8088}
 
 --Se usa en inicializar8088
@@ -117,7 +127,7 @@ incrementarDireccion (a, b) = (a + 1, b)
 
 --CASOS DE PRUEBA
 
-punto2 = nop.nop.nop    --Para lograr este punto interviene el concepto de composición
+punto2 = nop.nop.nop
 
 punto3 = add.(lodv 22).swap.(lodv 10)
 
