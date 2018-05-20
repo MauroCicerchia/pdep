@@ -1,5 +1,9 @@
 module MicroEntrega1 where
+import Data.List
 import Text.Show.Functions
+import Test.Hspec
+import Test.QuickCheck
+import Control.Exception (evaluate)
 
 data Microprocesador = Microprocesador {programCounter :: Int, acumuladorA :: Int, acumuladorB :: Int, memoria :: Memoria, programa :: Instruccion, mensajeError :: String} deriving Show
 type Posicion = Int
@@ -36,16 +40,20 @@ divide :: Instruccion
 divide = operar dividirAB
 
 str :: Int -> Int -> Instruccion
-str addr val = operar ((cargarNuevoEnMemoria addr val).(eliminarAnteriorDeMemoria addr))
+str addr val = operar (ordenarMemoria.cargarNuevoEnMemoria addr val.eliminarAnteriorDeMemoria addr)
+
 lod :: Int -> Instruccion
 lod addr micro = operar (cargarEnA (contenidoDe addr micro)) micro
 
 cargarPrograma :: Instruccion -> Instruccion
 cargarPrograma instruccion micro = micro {programa = instruccion}
 
-ejecutarPrograma :: Microprocesador -> Microprocesador
+ejecutarPrograma :: Instruccion
 ejecutarPrograma micro = (programa micro) micro
 
+ifnz :: Instruccion -> Instruccion
+ifnz _ (Microprocesador pC 0 acumB mem prog menError) = (Microprocesador pC 0 acumB mem prog menError)
+ifnz instruccion micro = instruccion micro
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --FUNCIONES AUXILIARES
@@ -86,6 +94,10 @@ eliminarAnteriorDeMemoria direccion micro = micro {memoria = ((eliminarRepetidos
 eliminarRepetidos :: Int -> Memoria -> Memoria
 eliminarRepetidos direccion = filter ((/=direccion).fst)
 
+--Se usa en str
+ordenarMemoria :: Instruccion
+ordenarMemoria micro = micro {memoria = sort.memoria $ micro}
+
 --Se usa en lod
 contenidoDe :: Int -> Microprocesador -> Int
 contenidoDe direccion  = snd.head.(encontrarDireccion direccion).memoria
@@ -119,6 +131,9 @@ inicializar8088 micro = micro {memoria = inicializarMemoria8088}
 inicializarMemoria8088 :: Memoria
 inicializarMemoria8088 = ((take 1024).(iterate incrementarDireccion)) (1,0)
 
+inicializarMemoriaInfinita :: Memoria
+inicializarMemoriaInfinita = iterate incrementarDireccion (1,0)
+
 --Se usa en inicializarMemoria8088
 incrementarDireccion :: (Posicion, Dato) -> (Posicion, Dato)
 incrementarDireccion (a, b) = (a + 1, b)
@@ -138,3 +153,30 @@ punto4b = (lod 2).inicializar8088
 punto4c = divide.(lod 1).swap.(lod 2).(str 2 0).(str 1 2)
 
 punto4d = divide.(lod 1).swap.(lod 2).(str 2 4).(str 1 12)
+
+main :: IO ()
+main = hspec $ do
+  describe "Prelude.head" $ do
+    it "4.2 programCounter == 4" $ do
+      (programCounter.punto3 $ xt8088) `shouldBe` (4 :: Int)
+
+    it "4.2 acumuladorA == 32" $ do
+      (acumuladorA.punto3 $ xt8088) `shouldBe` (32 :: Int)
+
+    it "4.2 acumuladorB == 0" $ do
+      (acumuladorB.punto3 $ xt8088) `shouldBe` (0 :: Int)
+
+    it "4.2 programCounter == 6" $ do
+      (programCounter.punto4c $ xt8088) `shouldBe` (6 :: Int)
+
+    it "4.2 acumuladorA == 2" $ do
+      (acumuladorA.punto4c $ xt8088) `shouldBe` (2 :: Int)
+
+    it "4.2 acumuladorB == 0" $ do
+      (acumuladorB.punto4c $ xt8088) `shouldBe` (0 :: Int)
+
+    it "4.2 mensajeError == 'DIVISION BY ZERO'" $ do
+      (mensajeError.punto4c $ xt8088) `shouldBe` ("DIVISION BY ZERO" :: String)
+
+    it "4.2 memoria == [(1,2),(2,0)]" $ do
+      (take 2.memoria.punto4c $ xt8088) `shouldBe` ([(1,2),(2,0)] :: Memoria)
