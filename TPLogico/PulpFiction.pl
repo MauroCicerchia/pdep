@@ -40,12 +40,12 @@ saleConMasDeUnaPersona(Persona) :-
 %Punto 5
 
 %Caso base
-acataOrden(Alguien, Persona) :-
-  trabajaPara(Persona, Alguien).
+acataOrden(Persona, Empleado) :-
+  trabajaPara(Persona, Empleado).
 %Caso recursivo
-acataOrden(Alguien, Persona) :-
-  trabajaPara(AlguienMas, Alguien),
-  acataOrden(AlguienMas, Persona).
+acataOrden(Persona, Empleado) :-
+  trabajaPara(AlguienMas, Empleado),
+  acataOrden(Persona, AlguienMas).
 
 
 
