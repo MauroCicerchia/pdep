@@ -1,6 +1,6 @@
 module Backend exposing(..)
 import Models exposing(Movie, Preferences)
-import List exposing(filter,member,map,sortBy,all,any, reverse)
+import List exposing(filter,member,map,sortBy,all,any, reverse, length)
 devTrue = identity
 
 -- **************
@@ -38,15 +38,6 @@ resetMovieList = always Models.moviesCollection
 -- Requerimiento: filtrar las películas que sean aptas para menores de edad,
 --                usando un checkbox;
 -- **************
-
---filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
---filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores peliculas=
---    if (mostrarSoloMenores) then
---       filter esApta peliculas
---    else
---       peliculas
---esApta : Movie->Bool
---esApta pelicula = pelicula.forKids
 
 filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
 filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = filter (esNecesarioFiltrar mostrarSoloMenores)
@@ -117,10 +108,15 @@ poseeActorBuscado : String->Movie->Bool
 poseeActorBuscado actor pelicula = List.member actor (pelicula.actors)
 
 tienePalabrasPreferencia : String -> Movie -> Movie
-tienePalabrasPreferencia palabras pelicula = if (peliculaTienePalabrasClave palabras pelicula) then
-    sumarPorcentaje 20 pelicula
- else
-    pelicula
+tienePalabrasPreferencia palabras pelicula = sumarPorcentaje ((cantidadDePalabras pelicula palabras)*20) pelicula
+
+cantidadDePalabras : Movie -> String -> Int
+cantidadDePalabras pelicula = length << filter (tienePalabra pelicula) << String.words
+
+--tienePalabrasPreferencia palabras pelicula = if (peliculaTienePalabrasClave palabras pelicula) then
+--    sumarPorcentaje 20 pelicula
+-- else
+--    pelicula
 
 sumarPorcentaje : Int->Movie->Movie
 sumarPorcentaje porcentaje pelicula =
