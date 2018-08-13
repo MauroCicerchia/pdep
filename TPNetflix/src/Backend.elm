@@ -1,6 +1,6 @@
 module Backend exposing(..)
 import Models exposing(Movie, Preferences)
-import List exposing(filter,member,map,sortBy,all,any)
+import List exposing(filter,member,map,sortBy,all,any, reverse)
 devTrue = identity
 
 -- **************
@@ -8,7 +8,7 @@ devTrue = identity
 -- **************
 
 filtrarPeliculasPorPalabrasClave : String -> List Movie -> List Movie
-filtrarPeliculasPorPalabrasClave palabras list = filter (peliculaTienePalabrasClave palabras) list
+filtrarPeliculasPorPalabrasClave palabras = filter (peliculaTienePalabrasClave palabras)
 
 -- esta función la dejamos casi lista, pero tiene un pequeño bug. ¡Corregilo!
 --
@@ -18,49 +18,61 @@ filtrarPeliculasPorPalabrasClave palabras list = filter (peliculaTienePalabrasCl
 -- * busca una coincidencia exacta, pero si escribís "Avengers Ultron" debería encontrar a "Avengers: Age Of Ultron"
 --
 peliculaTienePalabrasClave : String->Movie->Bool
-peliculaTienePalabrasClave palabras pelicula = all (buscarPalabra pelicula) (String.words palabras)
+peliculaTienePalabrasClave palabras pelicula = all (tienePalabra pelicula) (String.words palabras)
 
-buscarPalabra : Movie->String->Bool
-buscarPalabra pelicula palabra = String.contains (String.toUpper palabra) (String.toUpper pelicula.title)
+tienePalabra : Movie->String->Bool
+tienePalabra pelicula palabra = String.contains (String.toUpper palabra) (String.toUpper pelicula.title)
 -- **************
 -- Requerimiento: visualizar las películas según el género elegido en un selector;
 -- **************
 
 filtrarPeliculasPorGenero : String -> List Movie -> List Movie
-filtrarPeliculasPorGenero genero peliculas = filter (esDelGeneroBuscado genero) peliculas
+filtrarPeliculasPorGenero genero = filter (esDelGeneroBuscado genero) << resetMovieList
 
 esDelGeneroBuscado : String->Movie->Bool
 esDelGeneroBuscado genero pelicula = List.member genero (pelicula.genre)
+
+resetMovieList = always Models.moviesCollection
+
 -- **************
 -- Requerimiento: filtrar las películas que sean aptas para menores de edad,
 --                usando un checkbox;
 -- **************
 
+--filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
+--filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores peliculas=
+--    if (mostrarSoloMenores) then
+--       filter esApta peliculas
+--    else
+--       peliculas
+--esApta : Movie->Bool
+--esApta pelicula = pelicula.forKids
+
 filtrarPeliculasPorMenoresDeEdad : Bool -> List Movie -> List Movie
-filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores peliculas=
-    if (mostrarSoloMenores) then
-       filter esApta peliculas
-    else
-       peliculas
-esApta : Movie->Bool
-esApta pelicula = pelicula.forKids
+filtrarPeliculasPorMenoresDeEdad mostrarSoloMenores = filter (esNecesarioFiltrar mostrarSoloMenores)
+
+esNecesarioFiltrar mostrarSoloMenores pelicula = not mostrarSoloMenores || pelicula.forKids
+
 -- **************
 -- Requerimiento: ordenar las películas por su rating;
 -- **************
 
 ordenarPeliculasPorRating : List Movie -> List Movie
-ordenarPeliculasPorRating = sortBy (.rating)
+ordenarPeliculasPorRating = reverse << sortBy (.rating)
 
 -- **************
 -- Requerimiento: dar like a una película
 -- **************
 
 darLikeAPelicula : Int -> List Movie -> List Movie
-darLikeAPelicula idr peliculas = map (likearPorID idr) peliculas
+darLikeAPelicula idr = map (likearPorID idr)
 
 likearPorID : Int->Movie->Movie
-likearPorID idr pelicula= if (pelicula.id==idr) then  {pelicula | likes = pelicula.likes + 1}
-  else pelicula
+likearPorID idr pelicula=
+  if (pelicula.id==idr) then
+    {pelicula | likes = pelicula.likes + 1}
+  else
+    pelicula
 
 -- Requerimiento: cargar preferencias a través de un popup modal,
 --                calcular índice de coincidencia de cada película y
@@ -68,10 +80,10 @@ likearPorID idr pelicula= if (pelicula.id==idr) then  {pelicula | likes = pelicu
 -- **************
 
 calcularPorcentajeDeCoincidencia : Preferences -> List Movie -> List Movie
-calcularPorcentajeDeCoincidencia preferencias peliculas = map (chequearPreferencias preferencias) peliculas
+calcularPorcentajeDeCoincidencia preferencias = map (chequearPreferencias preferencias)
 
 chequearPreferencias : Preferences -> Movie -> Movie
-chequearPreferencias preferencias = tieneGeneroSimilar(preferencias.genre)<<esGeneroPredilecto (preferencias.genre)<<tieneActorPreferencia (preferencias.favoriteActor)<<tienePalabrasPreferencia (preferencias.keywords)
+chequearPreferencias preferencias = tieneGeneroSimilar(preferencias.genre) << esGeneroPredilecto (preferencias.genre) << tieneActorPreferencia (preferencias.favoriteActor) << tienePalabrasPreferencia (preferencias.keywords)
 
 tieneGeneroSimilar:String->Movie->Movie
 tieneGeneroSimilar generoR pelicula =
@@ -84,17 +96,7 @@ poseeSimilares : String->List String->Bool
 poseeSimilares generoR generos = any (parecidoA generoR) generos
 
 parecidoA : String->String->Bool
-parecidoA generoR genero =
-   if (generoR=="Horror" && genero=="Suspense") then
-     True
-  else
-    if (generoR=="Animated" && genero=="Family") then
-      True
-    else
-      if(generoR=="Disney" && genero=="Superhero") then
-        True
-      else
-        False
+parecidoA generoR genero = (generoR == "Horror" && genero == "Suspense") || (generoR == "Suspense" && genero == "Horror") || (generoR == "Animated" && genero == "Family") || (generoR == "Family" && generoR == "Animated") || (generoR == "Disney" && genero == "Superhero") || (generoR == "Superhero" && genero == "Disney") || (generoR == "Disney" && genero == "Animated") || (generoR == "Animated" && genero == "Disney")
 
 
 esGeneroPredilecto : String->Movie->Movie
@@ -103,8 +105,6 @@ esGeneroPredilecto generoR pelicula =
       sumarPorcentaje 60 pelicula
   else
       pelicula
-poseeActorBuscado : String->Movie->Bool
-poseeActorBuscado actor pelicula = List.member actor (pelicula.actors)
 
 tieneActorPreferencia : String->Movie->Movie
 tieneActorPreferencia actor pelicula =
@@ -113,10 +113,18 @@ tieneActorPreferencia actor pelicula =
   else
       pelicula
 
+poseeActorBuscado : String->Movie->Bool
+poseeActorBuscado actor pelicula = List.member actor (pelicula.actors)
+
+tienePalabrasPreferencia : String -> Movie -> Movie
 tienePalabrasPreferencia palabras pelicula = if (peliculaTienePalabrasClave palabras pelicula) then
     sumarPorcentaje 20 pelicula
  else
     pelicula
 
 sumarPorcentaje : Int->Movie->Movie
-sumarPorcentaje porcentaje pelicula = {pelicula | matchPercentage = pelicula.matchPercentage + porcentaje}
+sumarPorcentaje porcentaje pelicula =
+  if pelicula.matchPercentage + porcentaje <= 100 then
+    {pelicula | matchPercentage = pelicula.matchPercentage + porcentaje}
+  else
+    {pelicula | matchPercentage = 100}
