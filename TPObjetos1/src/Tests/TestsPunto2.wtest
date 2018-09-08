@@ -4,42 +4,41 @@ import Hechizos.*
 import Refuerzos.*
 import Universo.*
 
-test "Eliminar todos los artefactos de Rolando y Conocer la habilidad para la lucha de Rolando" {
+test "Eliminar todos los artefactos de Rolando y Conocer la habilidad para la lucha de Rolando." {
 	//1 (es el valor base)
 	rolando.eliminarTodosLosArtefactos()
-	assert.equals(1,rolando.habilidadLucha())
+	assert.equals(1, rolando.habilidadLucha())
 }
 
 test "Conocer la habilidad para la lucha de Rolando con todos los artefactos." {
 	//13 (1 como valor base + 3 de la espada del destino + 5 del collar divino + 4 de la máscara oscura)
-	assert.equals(13,rolando.habilidadLucha())
+	assert.equals(13, rolando.habilidadLucha())
 }
 
 test "Cambiar la cantidad de perlas del collar divino a 3.
-Conocer la habilidad para la lucha de Rolando con todos los artefactos.
-" {
+	Conocer la habilidad para la lucha de Rolando con todos los artefactos." {
 	//11 (1 como valor base + 3 de la espada del destino + 3 del collar divino + 4 de la máscara oscura)
 	collarDivino.perlas(3)
-	assert.equals(11,rolando.habilidadLucha())
+	assert.equals(11, rolando.habilidadLucha())
 }
 
 test "Cambiar el valor base para la lucha de Rolando a 8.
-Conocer la habilidad para la lucha de Rolando con todos los artefactos." {
+	Conocer la habilidad para la lucha de Rolando con todos los artefactos." {
 	//20 (8 como valor base + 3 de la espada del destino + 3 del collar divino + 4 de la máscara oscura)
 	rolando.habilidadLuchaBase(8)
-	assert.equals(20,rolando.habilidadLucha())
+	assert.equals(20, rolando.habilidadLucha())
 }
 
 test "Hacer que ocurra un eclipse.
-Preguntar por el valor de lucha de la máscara oscura." {
+	Preguntar por el valor de lucha de la máscara oscura." {
 	//5 (ya que la mitad de 10 es mayor a 4 que es el mínimo de valor de lucha para dicho artefacto)
 	universo.eclipse()
 	assert.equals(5,mascaraOscura.unidadesDeLucha())
 }
 
-test "Eliminar la máscara oscura de los artefactos de Rolando .
-Conocer la habilidad para la lucha de Rolando." {
+test "Eliminar la máscara oscura de los artefactos de Rolando.
+	Conocer la habilidad para la lucha de Rolando." {
 	//9 (1 como valor base + 3 de la espada del destino + 3 del collar divino)
 	rolando.removerArtefacto(mascaraOscura)
-	assert.equals(9,rolando.habilidadLucha())
+	assert.equals(9, rolando.habilidadLucha())
 }

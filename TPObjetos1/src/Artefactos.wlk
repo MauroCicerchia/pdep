@@ -61,7 +61,8 @@ object mascaraOscura {
 
 object armadura {
 	var refuerzo = ninguno
-	var portador = rolando
+	//var portador	//Punto 2
+	var portador = rolando	//Punto 3
 	
 	method unidadesDeLucha() {
 		return 2 + refuerzo.poder()
@@ -83,7 +84,8 @@ object armadura {
 }
 
 object espejo {
-	var portador = rolando
+	//var portador	//Punto 2
+	var portador = rolando	//Punto 3
 	
 	method unidadesDeLucha() {
 		if(portador.cantidadDeArtefactos() == 1) {

@@ -27,6 +27,7 @@ object ninguno{
 	{
 		return 0
 	}
+	
 	method armadura(armadura){
 		
 	}
