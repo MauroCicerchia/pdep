@@ -34,10 +34,12 @@ object rolando {
 	
 	method agregarArtefacto(unArtefacto) {
 		artefactos.add(unArtefacto)
+		unArtefacto.portador(self)
 	}
 	
 	method removerArtefacto(unArtefacto) {
 		artefactos.remove(unArtefacto)
+		unArtefacto.portador(null)
 	}
 	
 	method esMejorLuchando() {
@@ -46,5 +48,13 @@ object rolando {
 	
 	method estaCargado() {
 		return artefactos.size() >= 5
+	}
+	
+	method mejorArtefacto() {
+		return artefactos.max({unArtefacto => unArtefacto.unidadesDeLucha()})
+	}
+	
+	method cantidadDeArtefactos() {
+		return artefactos.size()
 	}
 }
