@@ -36,10 +36,10 @@ object hechizoBasico {
 }
 
 object libroDeHechizos {
-	var hechizos = []
+	var hechizos = [espectroMalefico,hechizoBasico]
 	
 	method poder() {
-		return hechizos.sum({hechizo=>hechizo.poder()})
+		return hechizos.filter({unHechizo=>unHechizo.esPoderoso()}).sum({unHechizo=>unHechizo.poder()})
 	}
 	
 	method esPoderoso() {
@@ -47,8 +47,7 @@ object libroDeHechizos {
 	}
 	
 	method agregarHechizo(unHechizo) {
-		if(unHechizo.esPoderoso())
-			hechizos.add(unHechizo)
+		hechizos.add(unHechizo)
 	}
 	
 	method removerHechizo(unHechizo) {

@@ -21,3 +21,13 @@ object bendicion {
 		armadura = unaArmadura
 	}
 }
+
+object ninguno{
+	method poder()
+	{
+		return 0
+	}
+	method armadura(armadura){
+		
+	}
+}

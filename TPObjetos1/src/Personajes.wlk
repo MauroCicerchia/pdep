@@ -1,12 +1,14 @@
 import Universo.*
 import Hechizos.*
 import Artefactos.*
+import Refuerzos.*
 
 object rolando {
 	var valorHechizoBase = 3
-	var hechizoPreferido
+	var hechizoPreferido = espectroMalefico
 	var habilidadLuchaBase = 1
-	var artefactos = []
+	//var artefactos = [espadaDelDestino,collarDivino,mascaraOscura]  //Punto 2
+	var artefactos = [espadaDelDestino,collarDivino,mascaraOscura,armadura,espejo]  //Punto 3
 	
 	method hechizoPreferido(unHechizo) {
 		hechizoPreferido = unHechizo
@@ -35,6 +37,7 @@ object rolando {
 	method agregarArtefacto(unArtefacto) {
 		artefactos.add(unArtefacto)
 		unArtefacto.portador(self)
+		artefactos.asSet()
 	}
 	
 	method removerArtefacto(unArtefacto) {
@@ -51,10 +54,15 @@ object rolando {
 	}
 	
 	method mejorArtefacto() {
-		return artefactos.max({unArtefacto => unArtefacto.unidadesDeLucha()})
+		return artefactos.filter({unArtefacto => !unArtefacto.equals(espejo)}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
 	}
 	
 	method cantidadDeArtefactos() {
 		return artefactos.size()
+	}
+	
+	//solo para tests:
+	method eliminarTodosLosArtefactos(){
+		artefactos.forEach({unArtefacto => self.removerArtefacto(unArtefacto)})
 	}
 }
