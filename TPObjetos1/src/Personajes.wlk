@@ -1,4 +1,6 @@
 import Universo.*
+import Hechizos.*
+import Artefactos.*
 
 object rolando {
 	var valorHechizoBase = 3
