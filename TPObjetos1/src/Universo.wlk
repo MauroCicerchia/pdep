@@ -1,11 +1,11 @@
 object universo {
-	var fuerzaOscura
+	var fuerzaOscura = 5
 	
 	method fuerzaOscura() {
-		
+		return fuerzaOscura
 	}
 	
 	method eclipse() {
-		
+		fuerzaOscura *= 2
 	}
 }
