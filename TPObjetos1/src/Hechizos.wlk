@@ -3,7 +3,7 @@ object espectroMalefico {
 	var armadura
 	
 	method nombre(unNombre) {
-		
+		nombre = unNombre
 	}
 	
 	method poder() {
