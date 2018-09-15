@@ -3,7 +3,7 @@ import Refuerzos.*
 import Personajes.*
 
 object espadaDelDestino {
-	var portador = rolando
+	var portador
 	
 	method unidadesDeLucha() {
 		return 3
@@ -20,7 +20,7 @@ object espadaDelDestino {
 
 object collarDivino {
 	var perlas = 5
-	var portador = rolando
+	var portador
 	
 	method unidadesDeLucha() {
 		return perlas
@@ -40,7 +40,7 @@ object collarDivino {
 }
 
 object mascaraOscura {
-	var portador = rolando
+	var portador
 	
 	method unidadesDeLucha() {
 		if(universo.fuerzaOscura() < 8) {
@@ -61,17 +61,14 @@ object mascaraOscura {
 
 object armadura {
 	var refuerzo = ninguno
-	//var portador	//Punto 2
-	var portador = rolando	//Punto 3
+	var portador
 	
 	method unidadesDeLucha() {
 		return 2 + refuerzo.poder()
 	}
 	
 	method refuerzo(unRefuerzo) {
-		refuerzo.armadura(null)
 		refuerzo = unRefuerzo
-		unRefuerzo.armadura(self)
 	}
 	
 	method portador() {
@@ -84,8 +81,7 @@ object armadura {
 }
 
 object espejo {
-	//var portador	//Punto 2
-	var portador = rolando	//Punto 3
+	var portador
 	
 	method unidadesDeLucha() {
 		if(portador.cantidadDeArtefactos() == 1) {

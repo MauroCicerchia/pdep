@@ -7,8 +7,7 @@ object rolando {
 	var valorHechizoBase = 3
 	var hechizoPreferido = espectroMalefico
 	var habilidadLuchaBase = 1
-	//var artefactos = [espadaDelDestino,collarDivino,mascaraOscura]  //Punto 2
-	var artefactos = [espadaDelDestino,collarDivino,mascaraOscura,armadura,espejo]  //Punto 3
+	var artefactos = #{}
 	
 	method hechizoPreferido(unHechizo) {
 		hechizoPreferido = unHechizo
@@ -37,7 +36,6 @@ object rolando {
 	method agregarArtefacto(unArtefacto) {
 		artefactos.add(unArtefacto)
 		unArtefacto.portador(self)
-		artefactos.asSet()
 	}
 	
 	method removerArtefacto(unArtefacto) {
@@ -61,8 +59,20 @@ object rolando {
 		return artefactos.size()
 	}
 	
-	//solo para tests:
+	//----------------------------------------- solo para tests ------------------------------------------------------------------
 	method eliminarTodosLosArtefactos(){
 		artefactos.forEach({unArtefacto => self.removerArtefacto(unArtefacto)})
+	}
+	
+	method setForTest2() {
+		self.agregarArtefacto(espadaDelDestino)
+		self.agregarArtefacto(collarDivino)
+		self.agregarArtefacto(mascaraOscura)
+	}
+	
+	method setForTest3() {
+		self.setForTest2()
+		self.agregarArtefacto(armadura)
+		self.agregarArtefacto(espejo)
 	}
 }
