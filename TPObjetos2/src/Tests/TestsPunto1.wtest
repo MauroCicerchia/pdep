@@ -1,0 +1,46 @@
+import Personajes.*
+import Artefactos.*
+import Hechizos.*
+import Refuerzos.*
+import Universo.*
+
+test "Conocer el nivel de hechicería de Rolando." {
+	//56 = 3 * 17 (que es el poder de su hechizo preferido) + 5 (valor de la fuerza oscura)
+	assert.equals(56, rolando.nivelDeHechiceria())
+}
+
+test "Cambiar el nombre del espectro maléfico a espectro superrecontramalefico 
+	muajajaja Y conocer el nivel de hechiceria." {
+	//125 = 3 * 40 (que es el poder de su hechizo preferido) + 5 (valor de la fuerza oscura)
+	espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
+	assert.equals(125,rolando.nivelDeHechiceria())
+}
+
+test "Cambiar el hechizo preferido de Rolando para que sea el hechizo básico y
+	Conocer el nivel de hechicería de Rolando." {
+	//35 = 3 * 10 (que es el poder de su hechizo preferido) + 5 (valor de la fuerza oscura)
+	rolando.hechizoPreferido(hechizoBasico)
+	assert.equals(35, rolando.nivelDeHechiceria())
+}
+
+test "Hacer que ocurra un eclipse y Conocer el nivel de hechicería de Rolando." {
+ 	//61 = 3 * 17 (que es el poder de su hechizo preferido) + 10 (valor de la fuerza oscura)
+	universo.eclipse()
+	assert.equals(61, rolando.nivelDeHechiceria())
+}
+
+test "Saber si el espectro maléfico es poderoso." {
+	//Lo es, ya que la cantidad de letras 17 supera 15.
+	assert.that(espectroMalefico.esPoderoso())
+}
+
+test "Cambiar el nombre del espectro maléfico a pepe y Saber si el espectro maléfico es poderoso." {
+	//No lo es, ya que la cantidad de letras 4 no supera 15.
+	espectroMalefico.nombre("pepe")
+	assert.notThat(espectroMalefico.esPoderoso())
+}
+
+test "Saber si el hechizo básico es poderoso." {
+	//No lo es, por definicion
+	assert.notThat(hechizoBasico.esPoderoso())
+}
