@@ -1,4 +1,6 @@
 object feriaDeHechiceria {
+	var hechizosALaVenta
+	
 	
 	
 }
