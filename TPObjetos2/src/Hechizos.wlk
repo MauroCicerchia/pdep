@@ -56,8 +56,8 @@ object libroDeHechizos {
 }
 
 class HechizoDeLogos{
-	var nombre
-	var multiplicador
+	var property nombre 
+	var property multiplicador 
 	
 	method precio(){
 		return self.poder()
@@ -70,4 +70,5 @@ class HechizoDeLogos{
 	method esPoderoso(){
 		return self.poder() > 15
 	}	
+	
 }

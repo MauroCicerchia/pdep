@@ -1,5 +1,6 @@
 object feriaDeHechiceria {
-	var hechizoDisponibles = []
+
+	var hechizosALaVenta = []
 	
 	method puedeComprar(hechizoActual,hechizoBuscado,oroDisponible){
 	
