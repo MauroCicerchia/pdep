@@ -2,16 +2,17 @@ import Universo.*
 import Hechizos.*
 import Artefactos.*
 import Refuerzos.*
+import Feria.*
 
-class Personaje
-{
+
+class Personaje {
 	var valorHechizoBase
-	var property hechizoPreferido
+	var property hechizoPreferido 
 	var habilidadLuchaBase
-	var property artefactos = #{}
+	var artefactos = #{}
+	var oro = 100
 	
-	constructor(valor, habilidad)
-	{
+	constructor(valor, habilidad) {
 		valorHechizoBase = valor
 		habilidadLuchaBase = habilidad
 		hechizoPreferido = ninguno
@@ -69,21 +70,38 @@ class Personaje
 		return artefactos.filter({unArtefacto => !unArtefacto.esClase("Espejo")}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
 	}
 	
-	method cantidadDeArtefactos()
-	{
-		return artefactos.size()
+	method cumplirObjetivo(){
+		oro += 10
 	}
 	
-	method eliminarTodosLosArtefactos()
+	method comprarHechizo(hechizoBuscado){
+		if(feriaDeHechiceria.puedeComprarHechizo( hechizoPreferido , oro ,hechizoBuscado)){
+			hechizoPreferido = hechizoBuscado
+			oro -= 0.max(hechizoBuscado.precio() - hechizoPreferido.precio()/2)
+		}
+	}
+	
+	method comprarArtefacto(artefactoBuscado){
+		if(feriaDeHechiceria.puedeComprarArtefacto(artefactoBuscado, oro)){
+				artefactos.add(artefactoBuscado)
+				oro -= artefactoBuscado.precio()
+		}
+	}
+	
+	method cantidadDeArtefactos() {
+		return artefactos.size()
+	}
+  
+  method eliminarTodosLosArtefactos()
 	{
 		artefactos.forEach({unArtefacto => self.removerArtefacto(unArtefacto)})
 	}
 }
 
-object nadie
-{
-	method nivelDeHechiceria()
-	{
+object nadie{
+	method nivelDeHechiceria(){
 		return 0
 	}
 }
+
+		

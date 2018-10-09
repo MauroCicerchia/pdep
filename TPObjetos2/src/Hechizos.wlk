@@ -5,6 +5,9 @@ object espectroMalefico {
 		nombre = unNombre
 	}
 	
+	method precio(){
+		return 15
+	}
 	method poder() {
 		return nombre.size()
 	}
@@ -17,6 +20,11 @@ object espectroMalefico {
 }
 
 object hechizoBasico {	
+	
+	method precio(){
+		return 10
+	}
+	
 	method poder() {
 		return 10
 	}
@@ -30,6 +38,10 @@ object hechizoBasico {
 
 object libroDeHechizos {
 	var hechizos = #{espectroMalefico,hechizoBasico}
+	
+	method precio(){
+		return hechizos.size()*10 + self.poder() 	
+	}
 	
 	method poder() {
 		return hechizos.filter({unHechizo => unHechizo.esPoderoso()}).sum({unHechizo => unHechizo.poder()})
@@ -47,6 +59,21 @@ object libroDeHechizos {
 	method removerHechizo(unHechizo) {
 		hechizos.remove(unHechizo)
 	}
+}
+
+class HechizoDeLogos{
+	var property nombre 
+	var property multiplicador 
 	
-	method armadura(unaArmadura) {}
+	method precio(){
+		return self.poder()
+	}
+	
+	method poder(){
+		return nombre.size()*multiplicador
+	}
+	
+	method esPoderoso(){
+		return self.poder() > 15
+	}	
 }
