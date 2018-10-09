@@ -34,7 +34,7 @@ object libroDeHechizos {
 	var hechizos = #{espectroMalefico,hechizoBasico}
 	
 	method precio(){
-			
+		return hechizos.size()*10 + self.poder() 	
 	}
 	
 	method poder() {
