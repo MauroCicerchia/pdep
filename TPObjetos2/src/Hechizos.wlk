@@ -1,23 +1,27 @@
-object espectroMalefico {
-	var nombre = "Espectro Malefico"
+class HechizoDeLogos {
+	var property nombre 
+	var property multiplicador 
 	
-	method nombre(unNombre) {
+	constructor(unNombre, unMultiplicador)
+	{
 		nombre = unNombre
+		multiplicador = unMultiplicador
 	}
 	
 	method precio(){
-		return 15
-	}
-	method poder() {
-		return nombre.size()
+		return self.poder()
 	}
 	
-	method esPoderoso() {
+	method poder(){
+		return nombre.size() * multiplicador
+	}
+	
+	method esPoderoso(){
 		return self.poder() > 15
-	}
-	
-	method armadura(unaArmadura) {}
+	}	
 }
+
+//object espectroMalefico inherits HechizoDeLogos("Espectro Malefico", 1) {}
 
 object hechizoBasico {	
 	
@@ -36,8 +40,13 @@ object hechizoBasico {
 	method armadura(unaArmadura) {}
 }
 
-object libroDeHechizos {
-	var hechizos = #{espectroMalefico,hechizoBasico}
+class LibroDeHechizos {
+	var hechizos
+	
+	constructor(unosHechizos)
+	{
+		hechizos = unosHechizos
+	}
 	
 	method precio(){
 		return hechizos.size()*10 + self.poder() 	
@@ -52,28 +61,11 @@ object libroDeHechizos {
 	}
 	
 	method agregarHechizo(unHechizo) {
-		if(!unHechizo.equals(self))
+		if(!unHechizo.equals(self))	//Explicar
 			hechizos.add(unHechizo)
 	}
 	
 	method removerHechizo(unHechizo) {
 		hechizos.remove(unHechizo)
 	}
-}
-
-class HechizoDeLogos{
-	var property nombre 
-	var property multiplicador 
-	
-	method precio(){
-		return self.poder()
-	}
-	
-	method poder(){
-		return nombre.size()*multiplicador
-	}
-	
-	method esPoderoso(){
-		return self.poder() > 15
-	}	
 }

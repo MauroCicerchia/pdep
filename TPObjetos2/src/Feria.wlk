@@ -3,7 +3,7 @@ object feriaDeHechiceria {
 	var hechizosALaVenta = []
 	var artefactosALaVenta = []
 	
-	method puedeComprarHechizo(hechizoActual,hechizoBuscado,oroDisponible){
+	method puedeComprarHechizo(hechizoActual, hechizoBuscado, oroDisponible){
 		return self.cubreCostoHechizo(hechizoActual,hechizoBuscado,oroDisponible) && self.estaALaVentaHechizo(hechizoBuscado)		
 	}
 

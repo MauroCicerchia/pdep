@@ -75,10 +75,11 @@ class Personaje {
 	}
 	
 	method comprarHechizo(hechizoBuscado){
-		if(feriaDeHechiceria.puedeComprarHechizo( hechizoPreferido , oro ,hechizoBuscado)){
-			hechizoPreferido = hechizoBuscado
-			oro -= 0.max(hechizoBuscado.precio() - hechizoPreferido.precio()/2)
+		if(!feriaDeHechiceria.puedeComprarHechizo(hechizoPreferido, hechizoBuscado, oro)){
+			self.error("Oro insuficiente")
 		}
+		oro -= 0.max(hechizoBuscado.precio() - hechizoPreferido.precio()/2)
+		hechizoPreferido = hechizoBuscado
 	}
 	
 	method comprarArtefacto(artefactoBuscado){
