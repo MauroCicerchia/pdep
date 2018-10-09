@@ -15,6 +15,8 @@ object espectroMalefico {
 	method esPoderoso() {
 		return self.poder() > 15
 	}
+	
+	method armadura(unaArmadura) {}
 }
 
 object hechizoBasico {	
@@ -30,6 +32,8 @@ object hechizoBasico {
 	method esPoderoso() {
 		return false
 	}
+	
+	method armadura(unaArmadura) {}
 }
 
 object libroDeHechizos {
@@ -72,5 +76,4 @@ class HechizoDeLogos{
 	method esPoderoso(){
 		return self.poder() > 15
 	}	
-	
 }

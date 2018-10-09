@@ -2,86 +2,81 @@ import Universo.*
 import Refuerzos.*
 import Personajes.*
 
-object espadaDelDestino {
-	var portador
+class Artefacto
+{
+	var property portador = null
 	
-	method unidadesDeLucha() {
+	method esClase(clase)
+	{
+		return self.className() == "Artefactos." + clase
+	}
+}
+
+class Arma inherits Artefacto
+{	
+	method unidadesDeLucha()
+	{
 		return 3
 	}
-	
-	method portador() {
-		return portador
-	}
-	
-	method portador(unPortador) {
-		portador = unPortador
-	}
 }
 
-object collarDivino {
-	var perlas = 5
-	var portador
+object collarDivino inherits Artefacto
+{
+	var property perlas = 5
 	
-	method unidadesDeLucha() {
+	method unidadesDeLucha()
+	{
 		return perlas
 	}
+}
+
+class Mascara inherits Artefacto
+{
+	var indiceDeOscuridad
+	var poderMinimo
 	
-	method perlas(cantidad) {
-		perlas = cantidad
+	constructor(indice)
+	{
+		indiceDeOscuridad = indice
+		poderMinimo = 4
 	}
 	
-	method portador() {
-		return portador
-	}
-	
-	method portador(unPortador) {
-		portador = unPortador
+	method unidadesDeLucha()
+	{
+		return poderMinimo.max(universo.fuerzaOscura() / 2 * indiceDeOscuridad)
 	}
 }
 
-object mascaraOscura {
-	var portador
+class Armadura inherits Artefacto
+{
+	var valorBase
+	var property refuerzo
 	
-	method unidadesDeLucha() {
-		if(universo.fuerzaOscura() < 8) {
-			return 4
-		} else {
-			return universo.fuerzaOscura() / 2
-		}
+	constructor(valor)
+	{
+		valorBase = valor
+		refuerzo = ninguno
 	}
 	
-	method portador() {
-		return portador
+	method unidadesDeLucha()
+	{
+		return valorBase + refuerzo.poder()
 	}
 	
-	method portador(unPortador) {
-		portador = unPortador
-	}
-}
-
-object armadura {
-	var refuerzo = ninguno
-	var portador
-	
-	method unidadesDeLucha() {
-		return 2 + refuerzo.poder()
+	method NivelDeHechiceriaDelPortador()
+	{
+		return portador.nivelDeHechiceria()
 	}
 	
-	method refuerzo(unRefuerzo) {
+	method agregarRefuerzo(unRefuerzo)
+	{
 		refuerzo = unRefuerzo
-	}
-	
-	method portador() {
-		return portador
-	}
-	
-	method portador(unPortador) {
-		portador = unPortador
+		refuerzo.armadura(self)
 	}
 }
 
-object espejo {
-	var portador
+class Espejo inherits Artefacto
+{
 	
 	method unidadesDeLucha() {
 		if(portador.cantidadDeArtefactos() == 1) {
@@ -89,13 +84,5 @@ object espejo {
 		} else {
 			return portador.mejorArtefacto().unidadesDeLucha()
 		}
-	}
-	
-	method portador() {
-		return portador
-	}
-	
-	method portador(unPortador) {
-		portador = unPortador
 	}
 }

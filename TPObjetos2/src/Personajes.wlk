@@ -4,10 +4,11 @@ import Artefactos.*
 import Refuerzos.*
 import Feria.*
 
+
 class Personaje {
-	var valorHechizoBase = 3
+	var valorHechizoBase
 	var property hechizoPreferido 
-	var habilidadLuchaBase = 1
+	var habilidadLuchaBase
 	var artefactos = #{}
 	var oro = 100
 	
@@ -16,51 +17,57 @@ class Personaje {
 		habilidadLuchaBase = habilidad
 		hechizoPreferido = ninguno
 	}
-		
-	method hechizoPreferido(unHechizo) {
-		hechizoPreferido = unHechizo
-	}
 	
-	method nivelDeHechiceria() {
+	method nivelDeHechiceria()
+	{
 		return valorHechizoBase * hechizoPreferido.poder() + universo.fuerzaOscura()
 	}
 	
-	method seCreePoderoso() {
+	method seCreePoderoso()
+	{
 		return hechizoPreferido.esPoderoso()
 	}
 	
-	method habilidadLuchaBase(cantidad) {
+	method habilidadLuchaBase(cantidad)
+	{
 		habilidadLuchaBase = cantidad
 	}
 	
-	method habilidadLucha() {
+	method habilidadLucha()
+	{
 		return habilidadLuchaBase + self.poderArtefactos()
 	}
 	
-	method poderArtefactos() {
+	method poderArtefactos()
+	{
 		return artefactos.sum({unArtefacto => unArtefacto.unidadesDeLucha()})
 	}
 	
-	method agregarArtefacto(unArtefacto) {
+	method agregarArtefacto(unArtefacto)
+	{
 		artefactos.add(unArtefacto)
 		unArtefacto.portador(self)
 	}
 	
-	method removerArtefacto(unArtefacto) {
+	method removerArtefacto(unArtefacto)
+	{
 		artefactos.remove(unArtefacto)
-		unArtefacto.portador(null)
+		unArtefacto.portador(nadie)
 	}
 	
-	method esMejorLuchando() {
+	method esMejorLuchando()
+	{
 		return self.habilidadLucha() > self.nivelDeHechiceria()
 	}
 	
-	method estaCargado() {
+	method estaCargado()
+	{
 		return artefactos.size() >= 5
 	}
 	
-	method mejorArtefacto() {
-		return artefactos.filter({unArtefacto => !unArtefacto.equals(espejo)}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
+	method mejorArtefacto()
+	{
+		return artefactos.filter({unArtefacto => !unArtefacto.esClase("Espejo")}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
 	}
 	
 	method cumplirObjetivo(){
@@ -83,13 +90,18 @@ class Personaje {
 	
 	method cantidadDeArtefactos() {
 		return artefactos.size()
-	}	
+	}
+  
+  method eliminarTodosLosArtefactos()
+	{
+		artefactos.forEach({unArtefacto => self.removerArtefacto(unArtefacto)})
+	}
 }
 
-	object nadie{
-		method nivelDeHechiceria(){
-			return 0
-		}
+object nadie{
+	method nivelDeHechiceria(){
+		return 0
 	}
+}
 
 		
