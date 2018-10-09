@@ -2,12 +2,14 @@ import Universo.*
 import Hechizos.*
 import Artefactos.*
 import Refuerzos.*
+import Feria.*
 
 object rolando {
 	var valorHechizoBase = 3
 	var hechizoPreferido = espectroMalefico
 	var habilidadLuchaBase = 1
 	var artefactos = #{}
+	var oro = 100
 	
 	method hechizoPreferido(unHechizo) {
 		hechizoPreferido = unHechizo
@@ -53,6 +55,14 @@ object rolando {
 	
 	method mejorArtefacto() {
 		return artefactos.filter({unArtefacto => !unArtefacto.equals(espejo)}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
+	}
+	
+	method cumplirObjetivo(){
+		oro += 10
+	}
+	
+	method comprarHechizo(hechizoBuscado){
+		feriaDeHechiceria.puedeComprarHechizo( hechizoPreferido , oro ,hechizoBuscado)
 	}
 	
 	method cantidadDeArtefactos() {
