@@ -4,13 +4,19 @@ import Artefactos.*
 import Refuerzos.*
 import Feria.*
 
-object rolando {
+class Personaje {
 	var valorHechizoBase = 3
-	var hechizoPreferido = espectroMalefico
+	var property hechizoPreferido 
 	var habilidadLuchaBase = 1
 	var artefactos = #{}
 	var oro = 100
 	
+	constructor(valor, habilidad) {
+		valorHechizoBase = valor
+		habilidadLuchaBase = habilidad
+		hechizoPreferido = ninguno
+	}
+		
 	method hechizoPreferido(unHechizo) {
 		hechizoPreferido = unHechizo
 	}
@@ -62,27 +68,28 @@ object rolando {
 	}
 	
 	method comprarHechizo(hechizoBuscado){
-		feriaDeHechiceria.puedeComprarHechizo( hechizoPreferido , oro ,hechizoBuscado)
+		if(feriaDeHechiceria.puedeComprarHechizo( hechizoPreferido , oro ,hechizoBuscado)){
+			hechizoPreferido = hechizoBuscado
+			oro -= 0.max(hechizoBuscado.precio() - hechizoPreferido.precio()/2)
+		}
+	}
+	
+	method comprarArtefacto(artefactoBuscado){
+		if(feriaDeHechiceria.puedeComprarArtefacto(artefactoBuscado, oro)){
+				artefactos.add(artefactoBuscado)
+				oro -= artefactoBuscado.precio()
+		}
 	}
 	
 	method cantidadDeArtefactos() {
 		return artefactos.size()
-	}
-	
-	//----------------------------------------- solo para tests ------------------------------------------------------------------
-	method eliminarTodosLosArtefactos(){
-		artefactos.forEach({unArtefacto => self.removerArtefacto(unArtefacto)})
-	}
-	
-	method setForTest2() {
-		self.agregarArtefacto(espadaDelDestino)
-		self.agregarArtefacto(collarDivino)
-		self.agregarArtefacto(mascaraOscura)
-	}
-	
-	method setForTest3() {
-		self.setForTest2()
-		self.agregarArtefacto(armadura)
-		self.agregarArtefacto(espejo)
-	}
+	}	
 }
+
+	object nadie{
+		method nivelDeHechiceria(){
+			return 0
+		}
+	}
+
+		

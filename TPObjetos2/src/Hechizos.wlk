@@ -5,6 +5,9 @@ object espectroMalefico {
 		nombre = unNombre
 	}
 	
+	method precio(){
+		return 15
+	}
 	method poder() {
 		return nombre.size()
 	}
@@ -15,10 +18,9 @@ object espectroMalefico {
 }
 
 object hechizoBasico {	
-	var precio=10
 	
 	method precio(){
-		return precio
+		return 10
 	}
 	
 	method poder() {
