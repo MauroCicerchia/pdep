@@ -1,20 +1,39 @@
 import Artefactos.*
 
-object cotaDeMalla {	
-	method poder() {
-		return 1
-	}
-}
-
-object bendicion {
-	method poder() {
-		return armadura.portador().nivelDeHechiceria()
-	}
-}
-
-object ninguno{
+class CotaDeMalla
+{	
 	method poder()
 	{
-		return 0
+		return 1
 	}
+	
+	method armadura(unaArmadura) {}
+}
+
+class Bendicion
+{
+	var armadura
+	
+	method poder()
+	{
+		return armadura.nivelDeHechiceriaDelPortador()
+	}
+	
+	method armadura(unaArmadura)
+	{
+		armadura = unaArmadura
+	}
+}
+
+object ninguno {
+	method poder()
+	{
+		self.error("El personaje no tiene asignado un hechizo")
+	}
+	
+	method esPoderoso() {
+		self.error("El personaje no tiene asignado un hechizo")
+	}
+	
+	method armadura(unaArmadura) {}
 }
