@@ -9,13 +9,15 @@ class Personaje {
 	var valorHechizoBase
 	var property hechizoPreferido 
 	var habilidadLuchaBase
-	var artefactos = #{}
-	var oro = 100
+	var artefactos
+	var oro
 	
 	constructor(valor, habilidad) {
 		valorHechizoBase = valor
-		habilidadLuchaBase = habilidad
 		hechizoPreferido = ninguno
+		habilidadLuchaBase = habilidad
+		artefactos = #{}
+		oro = 100
 	}
 	
 	method nivelDeHechiceria()
@@ -74,19 +76,31 @@ class Personaje {
 		oro += 10
 	}
 	
-	method comprarHechizo(hechizoBuscado){
-		if(!feriaDeHechiceria.puedeComprarHechizo(hechizoPreferido, hechizoBuscado, oro)){
-			self.error("Oro insuficiente")
-		}
-		oro -= 0.max(hechizoBuscado.precio() - hechizoPreferido.precio()/2)
-		hechizoPreferido = hechizoBuscado
+	method comprarHechizo(hechizo)
+	{
+		self.comprar(hechizo)
+		self.hechizoPreferido(hechizo)
 	}
 	
-	method comprarArtefacto(artefactoBuscado){
-		if(feriaDeHechiceria.puedeComprarArtefacto(artefactoBuscado, oro)){
-				artefactos.add(artefactoBuscado)
-				oro -= artefactoBuscado.precio()
+	method comprarArtefacto(artefacto)
+	{
+		self.comprar(artefacto)
+		self.agregarArtefacto(artefacto)
+	}
+	
+	method comprar(objeto)
+	{
+		if(!self.puedePagar(objeto))
+		{
+			self.error("Oro insuficiente")
 		}
+		feriaDeHechiceria.vender(objeto)
+		oro -= objeto.precioPara(self)
+	}
+	
+	method puedePagar(objeto)
+	{
+		return objeto.puedeSerCompradoPor(self)
 	}
 	
 	method cantidadDeArtefactos() {
