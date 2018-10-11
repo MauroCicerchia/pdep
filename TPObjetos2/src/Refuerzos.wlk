@@ -8,6 +8,11 @@ class CotaDeMalla
 	}
 	
 	method armadura(unaArmadura) {}
+	
+	method precioArmadura(unaArmadura)
+	{
+		return self.poder() / 2
+	}
 }
 
 class Bendicion
@@ -23,17 +28,9 @@ class Bendicion
 	{
 		armadura = unaArmadura
 	}
-}
-
-object ninguno {
-	method poder()
+	
+	method precioArmadura(unaArmadura)
 	{
-		self.error("El personaje no tiene asignado un hechizo")
+		return unaArmadura.valorBase()
 	}
-	
-	method esPoderoso() {
-		self.error("El personaje no tiene asignado un hechizo")
-	}
-	
-	method armadura(unaArmadura) {}
 }

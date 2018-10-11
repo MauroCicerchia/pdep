@@ -1,4 +1,31 @@
-class HechizoDeLogos {
+class Hechizo
+{	
+	method precioArmadura(unaArmadura)
+	{
+		return unaArmadura.valorBase()
+	}
+	
+	method puedeSerCompradoPor(personaje)
+	{
+		return self.precioPara(personaje) <= personaje.oro()
+	}
+	
+	method precioPara(personaje)
+	{
+		return 0.max(self.precio() - personaje.precioDeHechizo())
+	}
+	
+	method precio()
+	
+	method poder()
+	
+	method esPoderoso()
+	
+	method armadura() {}	
+}
+
+class HechizoDeLogos inherits Hechizo
+{
 	var property nombre 
 	var property multiplicador 
 	
@@ -8,39 +35,45 @@ class HechizoDeLogos {
 		multiplicador = unMultiplicador
 	}
 	
-	method precio(){
+	override method precio()
+	{
 		return self.poder()
 	}
 	
-	method poder(){
+	override method poder()
+	{
 		return nombre.size() * multiplicador
 	}
 	
-	method esPoderoso(){
+	override method esPoderoso()
+	{
 		return self.poder() > 15
 	}	
 }
 
 //object espectroMalefico inherits HechizoDeLogos("Espectro Malefico", 1) {}
 
-object hechizoBasico {	
+object hechizoBasico inherits Hechizo
+{	
 	
-	method precio(){
+	override method precio()
+	{
 		return 10
 	}
 	
-	method poder() {
+	override method poder()
+	{
 		return 10
 	}
 	
-	method esPoderoso() {
+	override method esPoderoso()
+	{
 		return false
 	}
-	
-	method armadura(unaArmadura) {}
 }
 
-class LibroDeHechizos {
+class LibroDeHechizos
+{
 	var hechizos
 	
 	constructor(unosHechizos)
@@ -48,24 +81,48 @@ class LibroDeHechizos {
 		hechizos = unosHechizos
 	}
 	
-	method precio(){
-		return hechizos.size()*10 + self.poder() 	
+	method precio()
+	{
+		return hechizos.size() * 10 + self.poder()
 	}
 	
-	method poder() {
+	method poder()
+	{
 		return hechizos.filter({unHechizo => unHechizo.esPoderoso()}).sum({unHechizo => unHechizo.poder()})
 	}
 	
-	method esPoderoso() {
+	method esPoderoso()
+	{
 		return true
 	}
 	
-	method agregarHechizo(unHechizo) {
+	method agregarHechizo(unHechizo)
+	{
 		if(!unHechizo.equals(self))	//Explicar
 			hechizos.add(unHechizo)
 	}
 	
-	method removerHechizo(unHechizo) {
+	method removerHechizo(unHechizo)
+	{
 		hechizos.remove(unHechizo)
+	}
+}
+
+object ninguno
+{
+	method poder()
+	{
+		self.error("El personaje no tiene asignado un hechizo")
+	}
+	
+	method esPoderoso() {
+		self.error("El personaje no tiene asignado un hechizo")
+	}
+	
+	method armadura(unaArmadura) {}
+	
+	method precioArmadura(unaArmadura)
+	{
+		return 2
 	}
 }
