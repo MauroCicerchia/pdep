@@ -115,7 +115,7 @@ class Personaje {
 
 object nadie{
 	method nivelDeHechiceria(){
-		return 0
+		self.error("El artefacto no tiene portador")
 	}
 }
 

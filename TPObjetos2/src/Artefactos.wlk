@@ -66,6 +66,11 @@ class Mascara inherits Artefacto
 		poderMinimo = 4
 	}
 	
+	method poderMinimo(minimo)
+	{
+		poderMinimo = minimo
+	}
+	
 	override method unidadesDeLucha()
 	{
 		return poderMinimo.max(universo.fuerzaOscura() / 2 * indiceDeOscuridad)

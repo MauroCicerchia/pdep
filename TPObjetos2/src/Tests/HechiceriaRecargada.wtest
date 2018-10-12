@@ -1,0 +1,57 @@
+import Personajes.*
+import Hechizos.*
+import Artefactos.*
+import Refuerzos.*
+import Universo.*
+import Feria.*
+
+describe "Hechiceria recargada"
+{
+	var rolando
+	var espectroMalefico
+	
+	fixture
+	{
+		rolando = new Personaje(3, 1)
+		espectroMalefico = new HechizoDeLogos("espectro malefico", 1)
+		rolando.hechizoPreferido(espectroMalefico)
+	}
+	
+	test "Conocer el nivel de hechicería de Rolando. 56"
+	{
+		assert.equals(56, rolando.nivelDeHechiceria())
+	}
+	
+	test "Cambiar el nombre del espectro maléfico a espectro superrecontramalefico muajajaja Y conocer el nivel de hechiceria. 125" 
+	{
+		espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
+		assert.equals(125,rolando.nivelDeHechiceria())
+	}
+	
+	test "Cambiar el hechizo preferido de Rolando para que sea el hechizo básico y conocer el nivel de hechicería de Rolando. 35"
+	{
+		rolando.hechizoPreferido(hechizoBasico)
+		assert.equals(35, rolando.nivelDeHechiceria())
+	}
+	
+	test "Hacer que ocurra un eclipse y Conocer el nivel de hechicería de Rolando. 61" 
+	{
+		universo.eclipse()
+		assert.equals(61, rolando.nivelDeHechiceria())
+	}
+	
+	test "Saber si el espectro maléfico es poderoso. Si" {
+		assert.that(espectroMalefico.esPoderoso())
+	}
+	
+	test "Cambiar el nombre del espectro maléfico a pepe y Saber si el espectro maléfico es poderoso. No"
+	{
+		espectroMalefico.nombre("pepe")
+		assert.notThat(espectroMalefico.esPoderoso())
+	}
+	
+	test "Saber si el hechizo básico es poderoso. No"
+	{
+		assert.notThat(hechizoBasico.esPoderoso())
+	}
+}

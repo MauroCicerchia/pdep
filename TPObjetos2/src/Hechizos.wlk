@@ -51,8 +51,6 @@ class HechizoDeLogos inherits Hechizo
 	}	
 }
 
-//object espectroMalefico inherits HechizoDeLogos("Espectro Malefico", 1) {}
-
 object hechizoBasico inherits Hechizo
 {	
 	
