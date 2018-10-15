@@ -1,4 +1,6 @@
-object feriaDeHechiceria {
+//Decidimos no implementarla
+
+/*object feriaDeHechiceria {
 
 	var objetos = []
 	
@@ -8,10 +10,14 @@ object feriaDeHechiceria {
 		{
 			self.error("La tienda no posee el objeto deseado")
 		}
-		objetos.remove(objeto)
+		self.removerObjeto(objeto)
 	}
 
 	method agregarObjeto(unObjeto){
 		objetos.add(unObjeto)
 	}
-}
+	
+	method removerObjeto(unObjeto){
+		objetos.remove(unObjeto)
+	}
+}*/

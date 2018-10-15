@@ -2,15 +2,13 @@ import Universo.*
 import Hechizos.*
 import Artefactos.*
 import Refuerzos.*
-import Feria.*
-
 
 class Personaje {
 	var valorHechizoBase
 	var property hechizoPreferido 
 	var habilidadLuchaBase
 	var artefactos
-	var oro
+	var property oro
 	
 	constructor(valor, habilidad) {
 		valorHechizoBase = valor
@@ -67,6 +65,10 @@ class Personaje {
 		return artefactos.size() >= 5
 	}
 	
+	/*
+	 * Decidimos permitir que existan multiples espejos. Por eso, a la hora de calcular el poder de un espejo, filtramos todos los espejos
+	 * que pudieran existir en la lista de artefactos del personaje.
+	 */
 	method mejorArtefacto()
 	{
 		return artefactos.filter({unArtefacto => !unArtefacto.esClase("Espejo")}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
@@ -94,13 +96,17 @@ class Personaje {
 		{
 			self.error("Oro insuficiente")
 		}
-		feriaDeHechiceria.vender(objeto)
 		oro -= objeto.precioPara(self)
 	}
 	
 	method puedePagar(objeto)
 	{
-		return objeto.puedeSerCompradoPor(self)
+		return objeto.precioPara(self) <= oro
+	}
+	
+	method precioDeHechizo()
+	{
+		return hechizoPreferido.precio()
 	}
 	
 	method cantidadDeArtefactos() {

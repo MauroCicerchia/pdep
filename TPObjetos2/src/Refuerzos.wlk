@@ -2,9 +2,16 @@ import Artefactos.*
 
 class CotaDeMalla
 {	
+	var poder
+	
+	constructor(unPoder)
+	{
+		poder = unPoder
+	}
+	
 	method poder()
 	{
-		return 1
+		return poder
 	}
 	
 	method armadura(unaArmadura) {}

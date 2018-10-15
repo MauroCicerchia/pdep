@@ -3,7 +3,6 @@ import Hechizos.*
 import Artefactos.*
 import Refuerzos.*
 import Universo.*
-import Feria.*
 
 describe "Lucha reformulada"
 {

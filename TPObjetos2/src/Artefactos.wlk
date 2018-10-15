@@ -5,7 +5,7 @@ import Hechizos.ninguno
 
 class Artefacto
 {
-	var property portador = null
+	var property portador = nadie
 	
 	method unidadesDeLucha()
 	
@@ -21,7 +21,7 @@ class Artefacto
 		return self.precio()
 	}
 	
-	method esClase(clase)
+	method esClase(clase)	//Ver explicacion en Personaje (linea 68)
 	{
 		return self.className() == "Artefactos." + clase
 	}
@@ -78,14 +78,14 @@ class Mascara inherits Artefacto
 	
 	override method precio()
 	{
-		return 5 * self.unidadesDeLucha()	//No especificado
+		return self.unidadesDeLucha()	//No especificado
 	}
 }
 
 class Armadura inherits Artefacto
 {
 	var valorBase
-	var property refuerzo
+	var refuerzo
 	
 	constructor(valor)
 	{
@@ -103,7 +103,7 @@ class Armadura inherits Artefacto
 		return valorBase + refuerzo.poder()
 	}
 	
-	method NivelDeHechiceriaDelPortador()
+	method nivelDeHechiceriaDelPortador()
 	{
 		return portador.nivelDeHechiceria()
 	}
