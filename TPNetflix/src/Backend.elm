@@ -78,10 +78,7 @@ chequearPreferencias preferencias = tieneGeneroSimilar(preferencias.genre) << es
 
 tieneGeneroSimilar:String->Movie->Movie
 tieneGeneroSimilar generoR pelicula =
-  if (poseeSimilares generoR pelicula.genre) then
-    sumarPorcentaje 15 pelicula
-  else
-    pelicula
+  sumarPorcentajeSiCumple (poseeSimilares generoR pelicula.genre) 15 pelicula
 
 poseeSimilares : String->List String->Bool
 poseeSimilares generoR generos = any (parecidoA generoR) generos
@@ -92,17 +89,11 @@ parecidoA generoR genero = (generoR == "Horror" && genero == "Suspense") || (gen
 
 esGeneroPredilecto : String->Movie->Movie
 esGeneroPredilecto generoR pelicula =
-  if (esDelGeneroBuscado generoR pelicula) then
-      sumarPorcentaje 60 pelicula
-  else
-      pelicula
+  sumarPorcentajeSiCumple (esDelGeneroBuscado generoR pelicula) 60 pelicula
 
 tieneActorPreferencia : String->Movie->Movie
 tieneActorPreferencia actor pelicula =
-  if (poseeActorBuscado actor pelicula) then
-      sumarPorcentaje 50 pelicula
-  else
-      pelicula
+  sumarPorcentajeSiCumple (poseeActorBuscado actor pelicula) 50 pelicula
 
 poseeActorBuscado : String->Movie->Bool
 poseeActorBuscado actor pelicula = List.member actor (pelicula.actors)
@@ -113,14 +104,13 @@ tienePalabrasPreferencia palabras pelicula = sumarPorcentaje ((cantidadDePalabra
 cantidadDePalabras : Movie -> String -> Int
 cantidadDePalabras pelicula = length << filter (tienePalabra pelicula) << String.words
 
---tienePalabrasPreferencia palabras pelicula = if (peliculaTienePalabrasClave palabras pelicula) then
---    sumarPorcentaje 20 pelicula
--- else
---    pelicula
+sumarPorcentajeSiCumple : Bool -> Int -> Movie -> Movie
+sumarPorcentajeSiCumple condicion porcentaje pelicula =
+  if (condicion) then
+    sumarPorcentaje porcentaje pelicula
+  else
+    pelicula
 
 sumarPorcentaje : Int->Movie->Movie
 sumarPorcentaje porcentaje pelicula =
-  if pelicula.matchPercentage + porcentaje <= 100 then
-    {pelicula | matchPercentage = pelicula.matchPercentage + porcentaje}
-  else
-    {pelicula | matchPercentage = 100}
+  {pelicula | matchPercentage = min 100 (pelicula.matchPercentage + porcentaje)}

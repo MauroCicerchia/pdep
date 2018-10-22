@@ -69,9 +69,14 @@ class Personaje {
 	 * Decidimos permitir que existan multiples espejos. Por eso, a la hora de calcular el poder de un espejo, filtramos todos los espejos
 	 * que pudieran existir en la lista de artefactos del personaje.
 	 */
-	method mejorArtefacto()
+	method mejorArtefactoRestante(unObjeto)
 	{
-		return artefactos.filter({unArtefacto => !unArtefacto.esClase("Espejo")}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
+		return artefactos.filter({unArtefacto => !unArtefacto.equals(unObjeto)}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
+	}
+	
+	method unidadesDeLuchaDelMejorArtefactoRestante(unObjeto)
+	{
+		return self.mejorArtefactoRestante(unObjeto).unidadesDeLucha()
 	}
 	
 	method cumplirObjetivo(){
@@ -109,8 +114,14 @@ class Personaje {
 		return hechizoPreferido.precio()
 	}
 	
-	method cantidadDeArtefactos() {
+	method cantidadDeArtefactos()
+	{
 		return artefactos.size()
+	}
+	
+	method soloTiene(unObjeto)
+	{
+		return artefactos.contains(unObjeto) && self.cantidadDeArtefactos() == 1
 	}
   
   method eliminarTodosLosArtefactos()

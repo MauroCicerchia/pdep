@@ -20,11 +20,6 @@ class Artefacto
 	{
 		return self.precio()
 	}
-	
-	method esClase(clase)	//Ver explicacion en Personaje (linea 68)
-	{
-		return self.className() == "Artefactos." + clase
-	}
 }
 
 class Arma inherits Artefacto
@@ -125,13 +120,13 @@ class Espejo inherits Artefacto
 	
 	override method unidadesDeLucha()
 	{
-		if(portador.cantidadDeArtefactos() == 1)
+		if(portador.soloTiene(self))
 		{
 			return 0
 		}
 		else
 		{
-			return portador.mejorArtefacto().unidadesDeLucha()
+			return portador.unidadesDeLuchaDelMejorArtefactoRestante(self)
 		}
 	}
 	

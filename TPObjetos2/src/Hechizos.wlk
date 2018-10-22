@@ -18,9 +18,8 @@ class Hechizo
 	
 	method armadura(unaArmadura) {}
 	
-	method esClase(clase)	//Ver explicacion en LibroDeHechizos (linea 92)
-	{
-		return self.className() == "Hechizos." + clase
+	method esLibro() {
+		return false;
 	}
 }
 
@@ -89,16 +88,21 @@ class LibroDeHechizos inherits Hechizo
 		return true
 	}
 	
+	override method esLibro()
+	{
+		return true
+	}
+	
 	/*
 	 * Decidimos que era conveniente (y logico) que pudieran existir más de un libro de hechizos.
 	 * Sin embargo, permitir que un libro contuviera a otro libro como hechizo, además de considerarlo conceptualmente mal,
 	 * resulta problemático, porque en un caso extremo en el que existieran dos libros, libro1 y libro2, y el libro1 contuviera al libro2 y viceversa
-	 * al querer calcular el poder del libro se generaría un bucle infinito. Por esto decidimos agregar el metodo esClase a la clase hechizo, para
-	 * evitar que se pueda agregar un libro como hechizo de otro. 
+	 * al querer calcular el poder del libro se generaría un bucle infinito. Por esto decidimos agregar el metodo esLibro a la clase hechizo, para
+	 * evitar que se pueda agregar un libro como hechizo de otro.
 	 */
 	method agregarHechizo(unHechizo)	
 	{
-		if(unHechizo.esClase("LibroDeHechizos"))
+		if(unHechizo.esLibro())
 			self.error("No se puede agregar un libro como hechizo de otro libro.")
 		hechizos.add(unHechizo)
 	}
