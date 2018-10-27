@@ -15,6 +15,9 @@ class Hechizo
 	method poder()
 	
 	method esPoderoso()
+	{
+		return self.poder() > 15
+	}
 	
 	method armadura(unaArmadura) {}
 	
@@ -43,11 +46,16 @@ class HechizoDeLogos inherits Hechizo
 	{
 		return nombre.size() * multiplicador
 	}
+}
+
+object hechizoComercial inherits HechizoDeLogos("el hechizo comercial", 2)
+{
+	var property porcentaje = 0.2
 	
-	override method esPoderoso()
+	override method poder()
 	{
-		return self.poder() > 15
-	}	
+		return super() * porcentaje
+	}
 }
 
 object hechizoBasico inherits Hechizo
@@ -61,11 +69,6 @@ object hechizoBasico inherits Hechizo
 	override method poder()
 	{
 		return 10
-	}
-	
-	override method esPoderoso()
-	{
-		return false
 	}
 }
 
@@ -83,23 +86,11 @@ class LibroDeHechizos inherits Hechizo
 		return hechizos.filter{unHechizo => unHechizo.esPoderoso()}.sum{unHechizo => unHechizo.poder()}
 	}
 	
-	override method esPoderoso()
-	{
-		return true
-	}
-	
 	override method esLibro()
 	{
 		return true
 	}
-	
-	/*
-	 * Decidimos que era conveniente (y logico) que pudieran existir más de un libro de hechizos.
-	 * Sin embargo, permitir que un libro contuviera a otro libro como hechizo, además de considerarlo conceptualmente mal,
-	 * resulta problemático, porque en un caso extremo en el que existieran dos libros, libro1 y libro2, y el libro1 contuviera al libro2 y viceversa
-	 * al querer calcular el poder del libro se generaría un bucle infinito. Por esto decidimos agregar el metodo esLibro a la clase hechizo, para
-	 * evitar que se pueda agregar un libro como hechizo de otro.
-	 */
+
 	method agregarHechizo(unHechizo)	
 	{
 		if(unHechizo.esLibro())
