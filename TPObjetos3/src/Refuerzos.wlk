@@ -20,6 +20,11 @@ class CotaDeMalla
 	{
 		return self.poder() / 2
 	}
+	
+	method peso()
+	{
+		return 1
+	}
 }
 
 class Bendicion
@@ -39,5 +44,10 @@ class Bendicion
 	method precioArmadura(unaArmadura)
 	{
 		return unaArmadura.valorBase()
+	}
+	
+	method peso()
+	{
+		return 0
 	}
 }

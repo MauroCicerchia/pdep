@@ -24,6 +24,18 @@ class Hechizo
 	method esLibro() {
 		return false;
 	}
+	
+	method peso()
+	{
+		if(self.poder().even())
+		{
+			return 2
+		}
+		else
+		{
+			return 1
+		}
+	}
 }
 
 class HechizoDeLogos inherits Hechizo

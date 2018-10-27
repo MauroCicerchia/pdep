@@ -9,13 +9,15 @@ class Personaje {
 	var habilidadLuchaBase
 	var artefactos
 	var property oro
+	var capacidadCarga
 	
-	constructor(valor, habilidad) {
+	constructor(valor, habilidad, capacidad) {
 		valorHechizoBase = valor
 		hechizoPreferido = ninguno
 		habilidadLuchaBase = habilidad
 		artefactos = #{}
 		oro = 100
+		capacidadCarga = capacidad
 	}
 	
 	method nivelDeHechiceria()
@@ -91,6 +93,10 @@ class Personaje {
 	
 	method comprarArtefacto(artefacto)
 	{
+		if(!self.puedeCargar(artefacto))
+		{
+			self.error("Capacidad de carga excedida.")
+		}
 		self.comprar(artefacto)
 		self.agregarArtefacto(artefacto)
 	}
@@ -124,9 +130,19 @@ class Personaje {
 		return artefactos.contains(unObjeto) && self.cantidadDeArtefactos() == 1
 	}
   
-  method eliminarTodosLosArtefactos()
+  	method eliminarTodosLosArtefactos()
 	{
 		artefactos.forEach({unArtefacto => self.removerArtefacto(unArtefacto)})
+	}
+	
+	method puedeCargar(artefacto)
+	{
+		return self.carga() + artefacto.peso() <= capacidadCarga
+	}
+	
+	method carga()
+	{
+		return artefactos.sum{unArtefacto => unArtefacto.peso()}
 	}
 }
 

@@ -6,6 +6,14 @@ import Hechizos.ninguno
 class Artefacto
 {
 	var property portador = nadie
+	var peso
+	var property diasDesdeCompra
+	
+	constructor(unPeso)
+	{
+		peso = unPeso
+		diasDesdeCompra = 0
+	}
 	
 	method unidadesDeLucha()
 	
@@ -19,6 +27,16 @@ class Artefacto
 	method precioPara(personaje)
 	{
 		return self.precio()
+	}
+	
+	method peso()
+	{
+		return peso - self.factorDeCorreccion()
+	}
+	
+	method factorDeCorreccion()
+	{
+		return 1.min(diasDesdeCompra / 1000)
 	}
 }
 
@@ -35,7 +53,7 @@ class Arma inherits Artefacto
 	}
 }
 
-object collarDivino inherits Artefacto
+object collarDivino inherits Artefacto(0) 
 {
 	var property perlas = 5
 	
@@ -48,6 +66,11 @@ object collarDivino inherits Artefacto
 	{
 		return 2 * perlas
 	}
+	
+	override method peso()
+	{
+		return super() + 0.5 * perlas
+	}
 }
 
 class Mascara inherits Artefacto
@@ -55,7 +78,7 @@ class Mascara inherits Artefacto
 	var indiceDeOscuridad
 	var poderMinimo
 	
-	constructor(indice)
+	constructor(peso, indice) = super(peso)
 	{
 		indiceDeOscuridad = indice
 		poderMinimo = 4
@@ -75,6 +98,11 @@ class Mascara inherits Artefacto
 	{
 		return self.unidadesDeLucha()	//No especificado
 	}
+	
+	override method peso()
+	{
+		return super() + 0.max(self.unidadesDeLucha() - 3)
+	}
 }
 
 class Armadura inherits Artefacto
@@ -82,7 +110,7 @@ class Armadura inherits Artefacto
 	var valorBase
 	var refuerzo
 	
-	constructor(valor)
+	constructor(peso, valor) = super(peso)
 	{
 		valorBase = valor
 		refuerzo = ninguno
@@ -112,6 +140,11 @@ class Armadura inherits Artefacto
 	override method precio()
 	{
 		return refuerzo.precioArmadura(self)
+	}
+	
+	override method peso()
+	{
+		return super() + refuerzo.peso()
 	}
 }
 
