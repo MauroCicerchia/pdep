@@ -85,34 +85,31 @@ class Personaje {
 		oro += 10
 	}
 	
-	method comprarHechizo(hechizo)
+	method comprarHechizo(hechizo, comerciante)
 	{
-		self.comprar(hechizo)
+		self.comprar(hechizo, comerciante)
 		self.hechizoPreferido(hechizo)
 	}
 	
-	method comprarArtefacto(artefacto)
+	method comprarArtefacto(artefacto, comerciante)
 	{
 		if(!self.puedeCargar(artefacto))
 		{
 			self.error("Capacidad de carga excedida.")
 		}
-		self.comprar(artefacto)
+		self.comprar(artefacto, comerciante)
 		self.agregarArtefacto(artefacto)
 	}
 	
-	method comprar(objeto)
+	method comprar(objeto, comerciante)
 	{
-		if(!self.puedePagar(objeto))
-		{
-			self.error("Oro insuficiente")
-		}
+		comerciante.vender(objeto, self)
 		oro -= objeto.precioPara(self)
 	}
 	
-	method puedePagar(objeto)
+	method puedePagar(costo)
 	{
-		return objeto.precioPara(self) <= oro
+		return costo <= oro
 	}
 	
 	method precioDeHechizo()
