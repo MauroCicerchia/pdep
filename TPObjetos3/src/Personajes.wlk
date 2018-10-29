@@ -67,10 +67,6 @@ class Personaje {
 		return artefactos.size() >= 5
 	}
 	
-	/*
-	 * Decidimos permitir que existan multiples espejos. Por eso, a la hora de calcular el poder de un espejo, filtramos todos los espejos
-	 * que pudieran existir en la lista de artefactos del personaje.
-	 */
 	method mejorArtefactoRestante(unObjeto)
 	{
 		return artefactos.filter({unArtefacto => !unArtefacto.equals(unObjeto)}).max({unArtefacto => unArtefacto.unidadesDeLucha()})
@@ -85,34 +81,31 @@ class Personaje {
 		oro += 10
 	}
 	
-	method comprarHechizo(hechizo)
+	method comprarHechizo(hechizo, comerciante)
 	{
-		self.comprar(hechizo)
+		self.comprar(hechizo, comerciante)
 		self.hechizoPreferido(hechizo)
 	}
 	
-	method comprarArtefacto(artefacto)
+	method comprarArtefacto(artefacto, comerciante)
 	{
 		if(!self.puedeCargar(artefacto))
 		{
 			self.error("Capacidad de carga excedida.")
 		}
-		self.comprar(artefacto)
+		self.comprar(artefacto, comerciante)
 		self.agregarArtefacto(artefacto)
 	}
 	
-	method comprar(objeto)
+	method comprar(objeto, comerciante)
 	{
-		if(!self.puedePagar(objeto))
-		{
-			self.error("Oro insuficiente")
-		}
-		oro -= objeto.precioPara(self)
+		comerciante.vender(objeto, self)
+		oro -= comerciante.precioPara(objeto, self)
 	}
 	
-	method puedePagar(objeto)
+	method puedePagar(costo)
 	{
-		return objeto.precioPara(self) <= oro
+		return costo <= oro
 	}
 	
 	method precioDeHechizo()

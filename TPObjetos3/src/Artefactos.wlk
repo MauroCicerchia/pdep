@@ -49,7 +49,7 @@ class Arma inherits Artefacto
 	
 	override method precio()
 	{
-		return 5 * self.unidadesDeLucha()
+		return 5 * self.peso()
 	}
 }
 
@@ -96,7 +96,7 @@ class Mascara inherits Artefacto
 	
 	override method precio()
 	{
-		return self.unidadesDeLucha()	//No especificado
+		return 10 * indiceDeOscuridad
 	}
 	
 	override method peso()

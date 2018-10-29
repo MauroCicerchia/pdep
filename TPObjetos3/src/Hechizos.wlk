@@ -11,6 +11,9 @@ class Hechizo
 	}
 	
 	method precio()
+	{
+		return self.poder()
+	}
 	
 	method poder()
 	
@@ -49,11 +52,6 @@ class HechizoDeLogos inherits Hechizo
 		multiplicador = unMultiplicador
 	}
 	
-	override method precio()
-	{
-		return self.poder()
-	}
-	
 	override method poder()
 	{
 		return nombre.size() * multiplicador
@@ -72,12 +70,6 @@ object hechizoComercial inherits HechizoDeLogos("el hechizo comercial", 2)
 
 object hechizoBasico inherits Hechizo
 {	
-	
-	override method precio()
-	{
-		return 10
-	}
-	
 	override method poder()
 	{
 		return 10
@@ -87,11 +79,6 @@ object hechizoBasico inherits Hechizo
 class LibroDeHechizos inherits Hechizo
 {
 	var hechizos = #{}
-	
-	override method precio()
-	{
-		return hechizos.size() * 10 + self.poder()
-	}
 	
 	override method poder()
 	{
