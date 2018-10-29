@@ -11,15 +11,15 @@ class Comerciante {
 	
 	method precioPara(objeto, personaje)
 	{
-		if(!objetos.contains(objeto))
-		{
-			self.error("El comerciante no posee este objeto.")			
-		}
 		return objeto.precioPara(personaje) + tipo.impuesto(objeto)
 	}
 	
 	method vender(objeto, personaje)
 	{
+		if(!objetos.contains(objeto))
+		{
+			self.error("El comerciante no posee este objeto.")			
+		}
 		if(!personaje.puedePagar(self.precioPara(objeto, personaje)))
 		{
 			self.error("Oro insuficiente.")

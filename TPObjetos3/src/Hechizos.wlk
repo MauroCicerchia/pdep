@@ -80,6 +80,11 @@ class LibroDeHechizos inherits Hechizo
 {
 	var hechizos = #{}
 	
+	override method precio()
+	{
+		return hechizos.size() * 10 + self.poder()
+	}
+	
 	override method poder()
 	{
 		return hechizos.filter{unHechizo => unHechizo.esPoderoso()}.sum{unHechizo => unHechizo.poder()}
@@ -119,5 +124,15 @@ object ninguno
 	method precioArmadura(unaArmadura)
 	{
 		return 2
+	}
+	
+	method precio()
+	{
+		return 0
+	}
+	
+	method peso()
+	{
+		return 0
 	}
 }

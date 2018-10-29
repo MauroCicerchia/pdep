@@ -7,12 +7,12 @@ class Artefacto
 {
 	var property portador = nadie
 	var peso
-	var property diasDesdeCompra
+	var property diaDeCompra
 	
 	constructor(unPeso)
 	{
 		peso = unPeso
-		diasDesdeCompra = 0
+		diaDeCompra = new Date()
 	}
 	
 	method unidadesDeLucha()
@@ -34,9 +34,14 @@ class Artefacto
 		return peso - self.factorDeCorreccion()
 	}
 	
+	method diasDesdeCompra()
+	{
+		return new Date() - diaDeCompra
+	}
+	
 	method factorDeCorreccion()
 	{
-		return 1.min(diasDesdeCompra / 1000)
+		return 1.min(self.diasDesdeCompra() / 100)
 	}
 }
 

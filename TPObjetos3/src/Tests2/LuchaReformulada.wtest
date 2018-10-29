@@ -1,0 +1,70 @@
+import Personajes.*
+import Hechizos.*
+import Artefactos.*
+import Refuerzos.*
+import Universo.*
+
+describe "Lucha reformulada"
+{
+	var rolando
+	var espadaDelDestino
+	var mascaraOscura
+	var mascaraParaNadaOscura
+	
+	fixture
+	{
+		rolando = new Personaje(3, 1, 200)
+		espadaDelDestino = new Arma(0)
+		mascaraOscura = new Mascara(0, 1)
+		mascaraParaNadaOscura = new Mascara(0, 0)
+		rolando.agregarArtefacto(espadaDelDestino)
+		rolando.agregarArtefacto(collarDivino)
+		rolando.agregarArtefacto(mascaraOscura)
+	}
+	
+	test "Eliminar todos los artefactos de Rolando y Conocer la habilidad para la lucha de Rolando. 1"
+	{
+		rolando.eliminarTodosLosArtefactos()
+		assert.equals(1, rolando.habilidadLucha())
+	}
+	
+	test "Conocer la habilidad para la lucha de Rolando con todos los artefactos. 13"
+	{
+		assert.equals(13, rolando.habilidadLucha())
+	}
+	
+	test "Cambiar la cantidad de perlas del collar divino a 3. Conocer la habilidad para la lucha de Rolando con todos los artefactos. 11"
+	{
+		collarDivino.perlas(3)
+		assert.equals(11, rolando.habilidadLucha())
+	}
+	
+	test "Cambiar el valor base para la lucha de Rolando a 8. Conocer la habilidad para la lucha de Rolando con todos los artefactos. 20"
+	{
+		rolando.habilidadLuchaBase(8)
+		assert.equals(20, rolando.habilidadLucha())
+	}
+	
+	test "Hacer que ocurra un eclipse. Preguntar por el valor de lucha de la máscara oscura. 5"
+	{
+		universo.eclipse()
+		assert.equals(5,mascaraOscura.unidadesDeLucha())
+	}
+	
+	test "Eliminar la máscara oscura de los artefactos de Rolando. Conocer la habilidad para la lucha de Rolando. 9"
+	{
+		rolando.removerArtefacto(mascaraOscura)
+		assert.equals(9, rolando.habilidadLucha())
+	}
+	
+	test "Tener una máscara (para nada) oscura con índice de oscuridad = 0. Preguntar por el valor de lucha de la máscara oscura de Rolando. 4"
+	{
+		assert.equals(4, mascaraParaNadaOscura.unidadesDeLucha())
+	}
+	
+	test "Tener una máscara (para nada) oscura con índice de oscuridad = 0, y valor mínimo en 2. Preguntar por el valor de lucha de la máscara oscura de Rolando. 2"
+	{
+		mascaraParaNadaOscura.poderMinimo(2)
+		assert.equals(2, mascaraParaNadaOscura.unidadesDeLucha())
+	}
+}

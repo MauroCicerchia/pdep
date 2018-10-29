@@ -1,0 +1,37 @@
+import Artefactos.*
+import Comerciantes.*
+import Hechizos.*
+import Personajes.*
+import Universo.*
+import Refuerzos.*
+import NPCs.*
+
+describe "NPCs"
+{
+	var navi
+	var ashleyGraham
+	var mascaraClara
+	
+	fixture
+	{
+		navi = new NPC(1, 1, 100, facil)
+		ashleyGraham = new NPC(1, 5, 100, moderada)
+		mascaraClara = new Mascara(2, 0)
+		ashleyGraham.agregarArtefacto(mascaraClara)
+	}
+	
+	test "Conocer la habilidad para la lucha de navi. 1"
+	{
+		assert.equals(1, navi.habilidadLucha())
+	}
+	
+	test "Conocer la habilidad para la lucha de Ashley Graham. 18"
+	{
+		assert.equals(18, ashleyGraham.habilidadLucha())
+	}
+	test "Hacer que Ashley Graham tenga dificultad difícil.Conocer la habilidad para la lucha de Ashley Graham. 3"
+	{
+		ashleyGraham.dificultad(dificil)
+		assert.equals(36, ashleyGraham.habilidadLucha())
+	}
+}

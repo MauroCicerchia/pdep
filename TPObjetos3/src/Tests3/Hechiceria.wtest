@@ -1,0 +1,31 @@
+import Artefactos.*
+import Comerciantes.*
+import Hechizos.*
+import Personajes.*
+import Universo.*
+import Refuerzos.*
+
+describe "Hechiceria"
+{
+	var espectroMalefico
+	var furibunda
+	
+	fixture
+	{
+		espectroMalefico = new HechizoDeLogos("espectro malefico", 3)
+		furibunda = new Personaje(3, 1, 200)
+		furibunda.hechizoPreferido(hechizoComercial)
+	}
+	
+	test "Saber el nivel de hechicería de Furibunda. 29"{
+		assert.equals(29, furibunda.nivelDeHechiceria())
+	}
+	
+	test "Saber si el hechizo comercial es poderoso. No es poderoso porque su poder es 8"{
+		assert.notThat(hechizoComercial.esPoderoso())
+	}
+
+	test "Saber si el espectro maléfico es poderoso. Sí, lo es porque su poder es 51"{
+		assert.that(espectroMalefico.esPoderoso())
+	}
+}

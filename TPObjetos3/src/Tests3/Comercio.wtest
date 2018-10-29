@@ -1,0 +1,58 @@
+import Artefactos.*
+import Comerciantes.*
+import Hechizos.*
+import Personajes.*
+import Universo.*
+import Refuerzos.*
+
+describe "Comercio"
+{
+
+	var pastoriza
+	var prieto
+	var fermepin
+	var ursula
+	var mascaraOscura
+	
+	fixture
+	{
+		mascaraOscura = new Mascara(3, 1)
+		pastoriza = new Comerciante(new Independiente(9), [mascaraOscura])
+		prieto = new Comerciante(registrado, [mascaraOscura])
+		fermepin = new Comerciante(conImpuestoGanancias, [mascaraOscura])
+		ursula = new Personaje(2, 1, 200)
+	}
+	
+	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a Pastoriza. 89.1 monedas"{
+		ursula.comprarArtefacto(mascaraOscura, pastoriza)
+		assert.equals(89.1, ursula.oro())
+	}
+	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a Prieto. 87.9 monedas"{
+		ursula.comprarArtefacto(mascaraOscura, prieto)
+		assert.equals(87.9, ursula.oro())
+	}
+	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a Fermepin. 88.25 monedas"{
+		ursula.comprarArtefacto(mascaraOscura, fermepin)
+		assert.equals(88.25, ursula.oro())
+	}
+	test "Recategorizar a Pastoriza.Hacer que Ursula le compre la máscara oscura a Pastoriza. 88.2 monedas"{
+		pastoriza.recategorizar()
+		ursula.comprarArtefacto(mascaraOscura, pastoriza)
+		assert.equals(88.2, ursula.oro())
+	}
+	test "Recategorizar dos veces a Pastoriza. Hacer que Ursula le compre la máscara oscura a Pastoriza. 87.9 monedas"{
+		2.times{_ => pastoriza.recategorizar()}
+		ursula.comprarArtefacto(mascaraOscura, pastoriza)
+		assert.equals(87.9, ursula.oro())
+	}
+	test "Recategorizar a Prieto. Hacer que Ursula le compre la máscara oscura a Prieto. 88.25 monedas"{
+		prieto.recategorizar()
+		ursula.comprarArtefacto(mascaraOscura, prieto)
+		assert.equals(88.25, ursula.oro())	
+	}
+	test "Recategorizar a Fermepin. Hacer que Ursula le compre la máscara oscura a Fermepin. 88.25 monedas"{
+		fermepin.recategorizar()
+		ursula.comprarArtefacto(mascaraOscura, fermepin)
+		assert.equals(88.25, ursula.oro())	
+	}
+}

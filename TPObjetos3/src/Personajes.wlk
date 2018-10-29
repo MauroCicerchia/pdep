@@ -139,40 +139,6 @@ class Personaje {
 	}
 }
 
-class NPC inherits Personaje
-{
-	var multiplicadorDificultad = 1
-	
-	override method habilidadLucha()
-	{
-		return super() * multiplicadorDificultad
-	}
-}
-
-class NPCFacil inherits NPC
-{
-	constructor(valor, habilidad, capacidad) = super(valor, habilidad, capacidad)
-	{
-		multiplicadorDificultad = 1
-	}
-}
-
-class NPCModerado inherits NPC
-{
-	constructor(valor, habilidad, capacidad) = super(valor, habilidad, capacidad)
-	{
-		multiplicadorDificultad = 2
-	}
-}
-
-class NPCDificil inherits NPC
-{
-	constructor(valor, habilidad, capacidad) = super(valor, habilidad, capacidad)
-	{
-		multiplicadorDificultad = 4
-	}
-}
-
 object nadie{
 	method nivelDeHechiceria(){
 		self.error("El artefacto no tiene portador")
