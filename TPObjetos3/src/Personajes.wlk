@@ -104,7 +104,7 @@ class Personaje {
 	method comprar(objeto, comerciante)
 	{
 		comerciante.vender(objeto, self)
-		oro -= objeto.precioPara(self)
+		oro -= comerciante.precioPara(objeto, self)
 	}
 	
 	method puedePagar(costo)

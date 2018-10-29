@@ -1,6 +1,6 @@
 class Comerciante {
 	
-	var tipo
+	var property tipo
 	var objetos
 	
 	constructor(unTipo, unosObjetos)
@@ -9,22 +9,27 @@ class Comerciante {
 		objetos = unosObjetos
 	}
 	
-	method precio(objeto)
+	method precioPara(objeto, personaje)
 	{
 		if(!objetos.contains(objeto))
 		{
 			self.error("El comerciante no posee este objeto.")			
 		}
-		return objeto.precio() + tipo.impuesto(objeto)
+		return objeto.precioPara(personaje) + tipo.impuesto(objeto)
 	}
 	
 	method vender(objeto, personaje)
 	{
-		if(!personaje.puedePagar(self.precio(objeto)))
+		if(!personaje.puedePagar(self.precioPara(objeto, personaje)))
 		{
 			self.error("Oro insuficiente.")
 		}
 		objetos.remove(objeto)
+	}
+	
+	method recategorizar()
+	{
+		tipo.recategorizar(self)
 	}
 }
 
@@ -39,15 +44,24 @@ class Independiente
 	
 	method impuesto(objeto)
 	{
-		return comision
+		return comision / 100 * objeto.precio()
+	}
+	
+	method recategorizar(comerciante)
+	{
+		comision *= 2
+		if(comision > 21)
+		{
+			comerciante.tipo(registrado)
+		}
 	}
 }
 
-object registrado
+object registrado inherits Independiente(21)
 {
-	method impuesto(objeto)
+	override method recategorizar(comerciante)
 	{
-		return 0.21 * objeto.precio()
+		comerciante.tipo(conImpuestoGanancias)
 	}
 }
 
@@ -59,4 +73,6 @@ object conImpuestoGanancias
 	{
 		return 0.max((objeto.precio() - minimoNoImponible) * 0.35)
 	}
+	
+	method recategorizar(comerciante) {}
 }
