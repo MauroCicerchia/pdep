@@ -41,3 +41,21 @@ class Navegante extends Pirata
     this.inteligencia /= 2;
   }
 }
+
+class Barco
+{
+  constructor(unaTripulacion)
+  {
+    this.tripulacion = unaTripulacion;
+  }
+
+  capitan = function()
+  {
+    return this.tripulacion.reduceRight((tempMax, tripulante) => tripulante.poderDeMando() > tempMax.poderDeMando() ? tripulante : tempMax);
+  }
+  
+  tripulacionFuerte()
+  {
+    return this.tripulacion.filter(tripulante => tripulante.esFuerte());
+  }
+}

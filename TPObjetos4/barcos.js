@@ -28,12 +28,12 @@ function Barco(unaMunicion, unaResistencia, unPoderDeFuego, unBando, unaTripulac
 
   this.fuerza = function()
   {
-    return this.tripulacionTotal().reduce((total, tripulante) => total + tripulante.poderDeMando(), 0);
+    return this.tripulacionTotal().reduce(function(total, tripulante) {return total + tripulante.poderDeMando()}, 0);
   }
 
   this.capitan = function()
   {
-    return this.tripulacion.reduceRight((tempMax, tripulante) => tripulante.poderDeMando() > tempMax.poderDeMando() ? tripulante : tempMax);
+    return this.tripulacion.reduceRight(function(tempMax, tripulante) {return tripulante.poderDeMando() > tempMax.poderDeMando() ? tripulante : tempMax});
   }
 
   this.pelearCon = function(enemigo)
@@ -57,12 +57,12 @@ function Barco(unaMunicion, unaResistencia, unPoderDeFuego, unBando, unaTripulac
 
   this.herirTripulacion = function()
   {
-    this.tripulacion.forEach(tripulante => tripulante.serHerido());
+    this.tripulacion.forEach(function(tripulante) {tripulante.serHerido()});
   }
 
   this.tripulacionFuerte = function()
   {
-    return this.tripulacion.filter(tripulante => tripulante.esFuerte());
+    return this.tripulacion.filter(function(tripulante) {return tripulante.esFuerte()});
   }
 
   this.agregarTripulacion = function(unaTripulacion)
@@ -95,7 +95,7 @@ function Barco(unaMunicion, unaResistencia, unPoderDeFuego, unBando, unaTripulac
   this.recibirCanionazos = function(cant)
   {
     this.resistencia = Math.max(0, this.resistencia - cant * 50);
-    this.tripulacion = this.tripulacion.filter(tripulante => !tripulante.estaDebil());
+    this.tripulacion = this.tripulacion.filter(function(tripulante) {return !tripulante.estaDebil()});
   }
 
   this.tieneTripulante = function(tripulante)

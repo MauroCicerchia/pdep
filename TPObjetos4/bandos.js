@@ -16,28 +16,28 @@ function Bando()
   }
 }
 
-const armadaInglesa = new Bando();
+var armadaInglesa = new Bando();
 
 armadaInglesa.municionTotal = function(municion)
 {
   return Math.floor(municion * 1.3);
 }
 
-const unionPirata = new Bando();
+var unionPirata = new Bando();
 
 unionPirata.poderDeFuegoTotal = function(poderDeFuego)
 {
   return poderDeFuego + 60;
 }
 
-const armadaDelHE = new Bando();
+var armadaDelHE = new Bando();
 
 armadaDelHE.tripulacionTotal = function(tripulacion)
 {
   return tripulacion.concat(tripulacion);
 }
 
-const ninguno = new Bando();
+var ninguno = new Bando();
 
 exports.armadaInglesa = armadaInglesa;
 exports.unionPirata = unionPirata;
