@@ -136,7 +136,9 @@ Array.prototype.randomElement = function ()
 
 Array.prototype.remove = function (element)
 {
-    this.splice(this.indexOf(element));
+    if(!this.includes(element))
+      throw new Error("El elemento no se encuentra en el array");
+    this.splice(this.indexOf(element), 1);
 }
 
 exports.Pirata = Pirata;
