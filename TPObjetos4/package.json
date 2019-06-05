@@ -146,7 +146,7 @@
     "jest-mock": "^23.2.0",
     "jest-serializer": "^23.0.1",
     "js-tokens": "^3.0.2",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^3.13.1",
     "jsbn": "^0.1.1",
     "jsesc": "^1.3.0",
     "json-schema": "^0.2.3",
