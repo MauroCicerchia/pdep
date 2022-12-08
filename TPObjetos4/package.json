@@ -224,7 +224,7 @@
     "psl": "^1.1.29",
     "punycode": "^2.1.1",
     "randomatic": "^3.1.1",
-    "qs": "^6.5.2",
+    "qs": "^6.5.3",
     "regenerator-runtime": "^0.11.1",
     "regex-cache": "^0.4.4",
     "regex-not": "^1.0.2",
